@@ -11,6 +11,12 @@ dayjs.extend(relativeTime)
 dayjs.extend(arraySupport)
 dayjs.extend(toArray)
 
+declare module 'vue' {
+  interface ComponentCustomProperties {
+    $dayjs(date?: dayjs.ConfigType): dayjs.Dayjs
+  }
+}
+
 export default {
   install(app: AppContext['app']) {
     app.config.globalProperties.$dayjs = dayjs
