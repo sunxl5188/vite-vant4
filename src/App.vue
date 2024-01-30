@@ -1,18 +1,19 @@
 <template>
   <div>
-    {{ $dayjs().format('YYYY-MM-DD HH:mm:ss') }}
-    <van-button type="primary">主要按钮</van-button>
-    <van-button type="success">成功按钮</van-button>
-    <van-button type="default">默认按钮</van-button>
-    <van-button type="warning">警告按钮</van-button>
-    <van-button type="danger">危险按钮</van-button>
-    <van-cell-group>
-      <van-cell title="单元格" value="内容" />
-      <van-cell title="单元格" value="内容" label="描述信息" />
-    </van-cell-group>
+    <h3>{{ currentDate }}---{{ $dayjs }}</h3>
+    <XlDatePicker v-model="currentDate" />
+    <XlPopup v-model="visible" />
+    <van-button @click="visible = !visible"> 主要按钮 </van-button>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref, getCurrentInstance, ComponentInternalInstance } from 'vue'
+
+const currentDate = ref<string>()
+const visible = ref<boolean>(false)
+const { proxy } = getCurrentInstance() as ComponentInternalInstance
+console.log(proxy?.$dayjs().format('YYYY-MM-DD'))
+</script>
 
 <style scoped></style>
