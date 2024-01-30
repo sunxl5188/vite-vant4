@@ -1,5 +1,12 @@
 import { createApp } from 'vue'
-import './style.css'
 import App from './App.vue'
+import dayjs from './utils/dayjs'
+import XlVant from './index'
+import './style.scss'
 
-createApp(App).mount('#app')
+const app = createApp(App)
+
+app.use(dayjs)
+app.use(XlVant)
+
+app.mount('#app')

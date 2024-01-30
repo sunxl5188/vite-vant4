@@ -1,4 +1,4 @@
-import DatePicker from './src/main.vue'
+import DatePicker from './datePicker.vue'
 ;(DatePicker as any).install = (Vue: any) => {
   Vue.component((DatePicker as any).extendOptions.name, DatePicker)
 }
