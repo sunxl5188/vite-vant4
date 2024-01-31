@@ -1,15 +1,29 @@
 <template>
   <div>
-    <h3>{{ $dayjs }}</h3>
-    
+    {{ value }}
+    <van-button type="primary" @click="visible = !visible">
+      主要按钮
+    </van-button>
+    <XlCascader
+      v-model="visible"
+      v-model:value="value"
+      @confirm="handleConfirm"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { getCurrentInstance, ComponentInternalInstance } from 'vue'
+import { ref, getCurrentInstance, ComponentInternalInstance } from 'vue'
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-console.log(proxy?.$dayjs())
+console.log(proxy)
+
+const visible = ref<boolean>(false)
+const value = ref()
+
+const handleConfirm = (data: string): void => {
+  console.log(data)
+}
 </script>
 
 <style scoped></style>

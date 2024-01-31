@@ -7,17 +7,30 @@
 <script setup lang="ts" name="XlPopup">
 import { ref, watch } from 'vue'
 
+interface PropsType {
+  attribute?: object
+}
+const props = withDefaults(defineProps<PropsType>(), {
+  attribute: () => {
+    return {}
+  }
+})
+
 const checkValue = defineModel({ type: Boolean, default: false })
 const emit = defineEmits(['update:model-value', 'close'])
 const visible = ref<boolean>(false)
 const _attribute = ref<object>({
-  position: 'bottom', //top bottom right left
-  'z-index': 100,
-  round: true,
-  closeable: true,
-  'safe-area-inset-top': true,
-  'safe-area-inset-bottom': true,
-  style: { height: '50%', width: '100%' }
+  ...{
+    position: 'bottom', //top bottom right left
+    'z-index': 100,
+    round: true,
+    closeable: true,
+    'safe-area-inset-top': true,
+    'safe-area-inset-bottom': true,
+    'close-on-click-overlay': false,
+    style: { height: '50%', width: '100%' }
+  },
+  ...props.attribute
 })
 
 watch(
@@ -35,4 +48,11 @@ const handleClose = () => {
 }
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+//van-popup van-popup--round van-popup--bottom van-safe-area-top van-safe-area-bottom
+.van-popup {
+  &.van-popup--bottom {
+    overflow-y: hidden;
+  }
+}
+</style>

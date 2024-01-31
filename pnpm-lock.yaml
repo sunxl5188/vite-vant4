@@ -58,6 +58,9 @@ devDependencies:
   postcss:
     specifier: ^8.4.33
     version: 8.4.33
+  postcss-px-to-viewport-8-plugin:
+    specifier: ^1.2.3
+    version: 1.2.3
   prettier:
     specifier: ^3.2.4
     version: 3.2.4
@@ -2290,6 +2293,12 @@ packages:
     dependencies:
       postcss: 8.4.33
       postcss-selector-parser: 6.0.15
+    dev: true
+
+  /postcss-px-to-viewport-8-plugin@1.2.3:
+    resolution: {integrity: sha512-HRNm9ZE4/7PWw4a6C0GmDxdnSJaQKtKxIqufMpPYymhKJM/3WbZCIuktyE8N5TXinXVIMkOJ1N6erlpoxvNMYA==}
+    dependencies:
+      object-assign: 4.1.1
     dev: true
 
   /postcss-selector-parser@6.0.15:

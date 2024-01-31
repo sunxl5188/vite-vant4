@@ -1,21 +1,11 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import XlVant4 from './index'
+import dayjs from '@/utils/dayjs'
 import './style.scss'
-import dayjs from 'dayjs'
-
-
-
 
 const app = createApp(App)
 
-
-declare module 'vue' {
-  export interface ComponentCustomProperties {
-    $dayjs(date?: dayjs.ConfigType): dayjs.Dayjs
-  }
-}
-
-app.config.globalProperties.$dayjs = dayjs
-
-
+app.use(XlVant4)
+app.use(dayjs)
 app.mount('#app')

@@ -1,22 +1,27 @@
 <template>
-  <van-date-picker
-    v-model="checkValue"
-    v-bind="_attribute"
-    @change="handleChange"
-    @confirm="handleConfirm"
-    @cancel="handleCancel"
-  ></van-date-picker>
+  <XlPopup v-model="visible" v-bind="popupAttribute">
+    <van-date-picker
+      v-model="checkValue"
+      v-bind="_attribute"
+      @change="handleChange"
+      @confirm="handleConfirm"
+      @cancel="handleCancel"
+    ></van-date-picker>
+  </XlPopup>
 </template>
 
 <script setup lang="ts" name="XlDatePicker">
 import { ref, onMounted } from 'vue'
 import useCurrentInstance from '@/utils/useCurrentInstance'
-
-const { proxy } = useCurrentInstance()
-
+import XlPopup from '../popup'
 import type { PickerOption } from 'vant'
 
-const currentDate = defineModel()
+const { proxy } = useCurrentInstance()
+const popupAttribute = ref<object>({
+  closeable: false
+})
+
+const visible = defineModel()
 const emit = defineEmits(['update:model-value', 'change', 'confirm', 'cancel'])
 
 const checkValue = ref<string[]>(new Array(3))
@@ -56,7 +61,6 @@ const handleChange = () => {
     ])
     .format('YYYY-MM-DD')
   emit('change', date)
-  emit('update:model-value', date)
 }
 const handleConfirm = () => {
   emit(
@@ -76,12 +80,12 @@ const handleConfirm = () => {
 }
 
 const handleCancel = () => {
+  emit('update:model-value', false)
   emit('cancel')
 }
 
 onMounted(() => {
   checkValue.value = proxy.$dayjs().format('YYYY-MM-DD').split('-')
-  currentDate.value = proxy.$dayjs().format('YYYY-MM-DD')
 })
 </script>
 
