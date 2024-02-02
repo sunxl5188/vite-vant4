@@ -1,14 +1,10 @@
 <template>
   <div>
-    {{ value }}
+    {{ value }}==={{ visible }}
     <van-button type="primary" @click="visible = !visible">
       主要按钮
     </van-button>
-    <XlCascader
-      v-model="visible"
-      v-model:value="value"
-      @confirm="handleConfirm"
-    />
+    <XlPicker v-model="visible" @confirm="handleConfirm" />
   </div>
 </template>
 

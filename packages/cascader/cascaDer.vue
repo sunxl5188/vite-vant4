@@ -15,7 +15,7 @@
 import { ref } from 'vue'
 import XlPopup from '../popup'
 import type { CascaderOption, CascaderFieldNames } from 'vant'
-import city from './city'
+import city from '../utils/city'
 
 interface PropsType {
   attribute?: object
@@ -58,14 +58,11 @@ const handleClose = (): void => {
 }
 const handleFinish = (e: any): void => {
   const { selectedOptions } = e
-  const labelName = props.fieldNames.text as string
-  const valueName = props.fieldNames.value as string
-  const labels = selectedOptions.map((item: any) => item[labelName])
-  const values = selectedOptions.map((item: any) => item[valueName])
   emit('update:value', checkValue.value)
-  emit('confirm', { value: checkValue.value, labels, values })
+  emit('confirm', { value: checkValue.value, selectedOptions })
   handleClose()
 }
 </script>
 
 <style scoped></style>
+../../src/utils/city ../utils/city
