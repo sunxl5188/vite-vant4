@@ -5,13 +5,19 @@
       v-bind="_attribute"
       @cancel="handleCancel"
       @confirm="handleConfirm"
+      @change="handleChange"
     ></van-picker>
   </XlPopup>
 </template>
 
 <script setup lang="ts" name="XlPicker">
 import { ref, watch } from 'vue'
-import type { PickerColumn, PickerFieldNames } from 'vant'
+import type {
+  PickerColumn,
+  PickerFieldNames,
+  PickerChangeEventParams,
+  PickerConfirmEventParams
+} from 'vant'
 import city from '../utils/city'
 
 interface PropsType {
@@ -26,10 +32,10 @@ const props = withDefaults(defineProps<PropsType>(), {
     return city
   }
 })
-const visibleBoole = ref<boolean>()
-const visible = defineModel('visible', { type: Boolean, default: false })
-const checkValue = defineModel({ type: Boolean, default: false })
-const emit = defineEmits(['update:model-value', 'confirm'])
+const visibleBoole = ref<boolean>(false)
+const visible = defineModel({ type: Boolean, default: false })
+const checkValue = defineModel('value', { type: Array, default: () => [] })
+const emit = defineEmits(['update:model-value', 'update:value', 'confirm'])
 
 const popupAttribute = ref<object>({
   closeable: false
@@ -37,32 +43,37 @@ const popupAttribute = ref<object>({
 
 const _attribute = ref({
   ...{
-    title: '请选择地区'
+    title: '请选择地区',
+    'swipe-duration': 300
   },
   ...{ columnsFieldNames: props.fieldNames }
 })
 
 const handleCancel = (): void => {
-  checkValue.value = false
+  emit('update:model-value', false)
 }
 
 const handleConfirm = ({
   selectedValues,
   selectedOptions,
   selectedIndexes
-}): void => {
+}: PickerConfirmEventParams): void => {
   emit('confirm', selectedValues, selectedOptions, selectedIndexes)
+  handleCancel()
 }
 
+const handleChange = ({ selectedValues }: PickerChangeEventParams): void => {
+  emit('update:value', selectedValues)
+}
+
+// wathc=======================
 watch(
   () => visible.value,
   val => {
     visibleBoole.value = val
   },
-  { deep: true, immediate: true }
+  { immediate: true }
 )
-
-// wathc=======================
 </script>
 
 <style scoped></style>
