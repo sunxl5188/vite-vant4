@@ -2,9 +2,10 @@ import XlDatePicker from '../packages/date-picker'
 import XlPopup from '../packages/popup'
 import XlCascaDer from '../packages/cascader'
 import XlPicker from '../packages/picker'
+import XlPullRefresh from '../packages/pull-refresh'
 
 // 存储组件列表
-const components = [XlDatePicker, XlPopup, XlCascaDer, XlPicker]
+const components = [XlDatePicker, XlPopup, XlCascaDer, XlPicker, XlPullRefresh]
 
 // 定义 install 方法，接收 Vue 作为参数。如果使用 use 注册插件，则所有的组件都将被注册
 const install: any = function (Vue: any, opts: any = {}): void {
@@ -30,5 +31,6 @@ export default {
   XlDatePicker,
   XlPopup,
   XlCascaDer,
-  XlPicker
+  XlPicker,
+  XlPullRefresh
 }
