@@ -4,6 +4,7 @@ import XlCascaDer from '../packages/cascader'
 import XlPicker from '../packages/picker'
 import XlPullRefresh from '../packages/pull-refresh'
 import XlPickerGroup from '../packages/picker-group'
+import XlPickerDateGroup from '../packages/picker-date-group'
 
 // 存储组件列表
 const components = [
@@ -12,7 +13,8 @@ const components = [
   XlCascaDer,
   XlPicker,
   XlPullRefresh,
-  XlPickerGroup
+  XlPickerGroup,
+  XlPickerDateGroup
 ]
 
 // 定义 install 方法，接收 Vue 作为参数。如果使用 use 注册插件，则所有的组件都将被注册
@@ -41,5 +43,6 @@ export default {
   XlCascaDer,
   XlPicker,
   XlPullRefresh,
-  XlPickerGroup
+  XlPickerGroup,
+  XlPickerDateGroup
 }

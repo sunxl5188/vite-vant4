@@ -1,7 +1,7 @@
 <template>
   <XlPopup
     v-model="visible"
-    v-bind="{ ...{ closeable: false, style: { height: '65%' } }, ...popupAttr }"
+    v-bind="{ ...{ closeable: false, style: { height: '55%' } }, ...popupAttr }"
   >
     <van-picker-group
       v-model:active-tab="activeTab"
@@ -9,18 +9,21 @@
       @confirm="handleConfirm"
       @cancel="handleCancel"
     >
-      <template v-for="(item, i) of _attribute.tabs">
-        <slot :name="`tab${i + 1}`">{{ i }}</slot>
-      </template>
+      <slot name="tab1"></slot>
+      <slot name="tab2"></slot>
+      <slot name="tab3"></slot>
+      <slot name="tab4"></slot>
+      <slot name="tab5"></slot>
+      <slot name="tab6"></slot>
+      <slot name="tab7"></slot>
+      <slot name="tab8"></slot>
+      <slot name="tab9"></slot>
     </van-picker-group>
   </XlPopup>
 </template>
 
 <script setup lang="ts" name="XlPickerGroup">
 import { ref } from 'vue'
-import type { PickerGroupProps } from 'vant'
-
-const activeTab = ref<number>(0)
 
 interface PropsType {
   popupAttr?: object
@@ -36,7 +39,7 @@ const props = withDefaults(defineProps<PropsType>(), {
   }
 })
 
-const _attribute = ref<PickerGroupProps>({
+const _attribute = ref({
   ...{
     title: '选择日期',
     tabs: ['选择日期', '选择时间'],
@@ -46,6 +49,8 @@ const _attribute = ref<PickerGroupProps>({
   },
   ...props.attribute
 })
+
+const activeTab = ref<number>(0)
 
 const visible = defineModel()
 const emit = defineEmits(['update:model-value', 'confirm'])
