@@ -1,6 +1,7 @@
 <template>
   <XlPopup v-model="visibleBoole" :attribute="popupAttribute">
     <van-picker
+      v-model="checkValue"
       :columns="columns"
       v-bind="_attribute"
       @cancel="handleCancel"
@@ -34,7 +35,10 @@ const props = withDefaults(defineProps<PropsType>(), {
 })
 const visibleBoole = ref<boolean>(false)
 const visible = defineModel({ type: Boolean, default: false })
-const checkValue = defineModel('value', { type: Array, default: () => [] })
+const checkValue = defineModel('value', {
+  type: Array,
+  default: () => new Array(3)
+})
 const emit = defineEmits(['update:model-value', 'update:value', 'confirm'])
 
 const popupAttribute = ref<object>({

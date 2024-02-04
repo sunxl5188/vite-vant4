@@ -6,12 +6,7 @@
     @change="handleChange"
     class="h-full"
   >
-    <div
-      class="bg-blue-700"
-      style="margin: 0 auto; height: 5000px; width: 100px"
-    >
-      <p v-for="(item, i) of 100" :key="i">刷新次数: {{ count }}=={{ item }}</p>
-    </div>
+    <slot></slot>
   </van-pull-refresh>
 </template>
 
