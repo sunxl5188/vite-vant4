@@ -23,8 +23,6 @@
 </template>
 
 <script setup lang="ts" name="XlPickerGroup">
-import { ref } from 'vue'
-
 interface PropsType {
   popupAttr?: object
   attribute?: object
@@ -53,14 +51,16 @@ const _attribute = ref({
 const activeTab = ref<number>(0)
 
 const visible = defineModel()
-const emit = defineEmits(['update:model-value', 'confirm'])
+const emit = defineEmits(['update:model-value', 'confirm', 'cancel'])
 
 const handleConfirm = (): void => {
   emit('confirm')
 }
 const handleCancel = (): void => {
-  emit('update:model-value', false)
+  emit('cancel')
 }
+
+defineExpose({ activeTab })
 </script>
 
 <style scoped></style>

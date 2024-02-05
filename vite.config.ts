@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import eslintPlugin from 'vite-plugin-eslint'
+import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { VantResolver } from '@vant/auto-import-resolver'
 import VueSetupExtend from 'vite-plugin-vue-setup-extend'
@@ -31,6 +32,18 @@ export default defineConfig({
     }),
     Components({
       resolvers: [VantResolver()]
+    }),
+    AutoImport({
+      // 自动导入 Vue 相关函数，如：ref, reactive, toRef 等
+      imports: ['vue'],
+      // eslint 报错解决：'ref' is not defined
+      eslintrc: {
+        // 默认 false, true 启用生成。生成一次就可以，避免每次工程启动都生成，一旦生成配置文件之后，最好把 enable 关掉，即改成 false。
+        // 否则这个文件每次会在重新加载的时候重新生成，这会导致 eslint 有时会找不到这个文件。当需要更新配置文件的时候，再重新打开
+        enabled: false
+        // filepath: './.eslintrc-auto-import.json', // 默认就是 ./.eslintrc-auto-import.json
+        // globalsPropValue: true, // 默认 true
+      }
     })
   ],
   server: {
