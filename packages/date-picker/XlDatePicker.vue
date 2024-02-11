@@ -11,7 +11,6 @@
 </template>
 
 <script setup lang="ts" name="XlDatePicker">
-import { ref, onMounted } from 'vue'
 import useCurrentInstance from '@/utils/useCurrentInstance'
 import XlPopup from '../popup'
 import type { PickerOption } from 'vant'

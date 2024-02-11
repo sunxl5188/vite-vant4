@@ -5,8 +5,6 @@
 </template>
 
 <script setup lang="ts" name="XlPopup">
-import { ref, watch } from 'vue'
-
 interface PropsType {
   attribute?: object
 }

@@ -12,7 +12,6 @@
 </template>
 
 <script setup lang="ts" name="XlPicker">
-import { ref, watch } from 'vue'
 import type {
   PickerColumn,
   PickerFieldNames,

@@ -11,8 +11,6 @@
 </template>
 
 <script setup lang="ts" name="XlPullRefresh">
-import { ref } from 'vue'
-
 const load = ref<boolean>(false)
 const count = ref<number>(0)
 const emit = defineEmits(['change'])

@@ -12,7 +12,6 @@
 </template>
 
 <script setup lang="ts" name="XlCascader">
-import { ref } from 'vue'
 import XlPopup from '../popup'
 import type { CascaderOption, CascaderFieldNames } from 'vant'
 import city from '../utils/city'

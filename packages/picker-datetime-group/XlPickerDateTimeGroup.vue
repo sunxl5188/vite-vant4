@@ -30,6 +30,7 @@
     </template>
     <template #tab4>
       <van-time-picker
+        ref="time2"
         v-model="currentTime2"
         v-bind="_timeAttr2"
         @change="handleChange"
@@ -41,6 +42,7 @@
 <script setup lang="ts" name="XlPickerDateTimeGroup">
 import XlPickerGroup from '../picker-group/index'
 import useCurrentInstance from '@/utils/useCurrentInstance'
+import { showToast } from 'vant'
 
 const picker = ref<InstanceType<typeof XlPickerGroup> | null>(null)
 
@@ -129,12 +131,20 @@ const formatDate = (): string[] => {
 //提交日期
 const handleConfirm = (): void => {
   const checkDate = formatDate()
-  emit('confirm', checkDate)
-  picker.value!.activeTab = 0
-  handleCancel()
+  if (proxy.$dayjs(checkDate[0]).isAfter(checkDate[1], 'second')) {
+    showToast({
+      type: 'fail',
+      message: '开始时间不能大于结束时间',
+      duration: 3500
+    })
+  } else {
+    emit('confirm', checkDate)
+    handleCancel()
+  }
 }
 
 const handleCancel = (): void => {
+  picker.value!.activeTab = 0
   emit('update:model-value', false)
 }
 
@@ -146,7 +156,7 @@ const handleChange = (): void => {
 }
 
 onMounted(() => {
-  if (value.value) {
+  if (value.value.length) {
     currentDate1.value = proxy
       .$dayjs(value.value[0])
       .format('YYYY-MM-DD')
