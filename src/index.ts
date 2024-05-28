@@ -9,6 +9,7 @@ import XlPickerDateTimeGroup from '../packages/picker-datetime-group'
 import XlCheckbox from '../packages/checkbox'
 import XlRadio from '../packages/radio'
 import XlUploader from '../packages/uploader'
+import XlVirtuallyList from '../packages/virtually-list'
 
 // 存储组件列表
 const components = [
@@ -22,7 +23,8 @@ const components = [
   XlPickerDateTimeGroup,
   XlCheckbox,
   XlRadio,
-  XlUploader
+  XlUploader,
+  XlVirtuallyList
 ]
 
 // 定义 install 方法，接收 Vue 作为参数。如果使用 use 注册插件，则所有的组件都将被注册
@@ -56,5 +58,6 @@ export default {
   XlPickerDateTimeGroup,
   XlCheckbox,
   XlRadio,
-  XlUploader
+  XlUploader,
+  XlVirtuallyList
 }

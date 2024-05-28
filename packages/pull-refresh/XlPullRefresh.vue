@@ -6,22 +6,44 @@
     @change="handleChange"
     class="h-full"
   >
-    <slot></slot>
+    <van-list
+      v-model:loading="list.loading"
+      v-model.error="list.error"
+      :finished="list.finished"
+      v-bind="props.listAttribute"
+    >
+      <slot></slot>
+    </van-list>
   </van-pull-refresh>
 </template>
 
 <script setup lang="ts" name="XlPullRefresh">
+import type { ListProps } from 'vant'
+
 const load = ref<boolean>(false)
 const count = ref<number>(0)
 const emit = defineEmits(['change'])
 
 interface PropsType {
   attribute?: object
+  listAttribute?: any
 }
 
 const props = withDefaults(defineProps<PropsType>(), {
   attribute: () => {
     return {}
+  },
+  listAttribute: () => {
+    return {
+      offset: 300,
+      loadingText: '数据加载中...',
+      finishedText: '没有更多了',
+      errorText: '数据加载失败，请联系管理员',
+      immediateCheck: true,
+      disabled: false,
+      direction: 'down',
+      scroller: null
+    }
   }
 })
 
@@ -55,6 +77,16 @@ const handleChange = ({
 }): void => {
   emit('change', status, distance)
 }
+
+const list = reactive<ListProps>({
+  loading: false,
+  error: false,
+  finished: false,
+  offset: props.listAttribute.offset,
+  disabled: props.listAttribute.disabled,
+  direction: props.listAttribute.direction,
+  immediateCheck: props.listAttribute.immediate
+})
 </script>
 
 <style scoped lang="scss">

@@ -47,7 +47,7 @@ export default defineConfig({
     })
   ],
   server: {
-    host: 'localhost', //0.0.0.0
+    host: '0.0.0.0', //0.0.0.0
     port: 8080,
     strictPort: false,
     hmr: { overlay: false },
