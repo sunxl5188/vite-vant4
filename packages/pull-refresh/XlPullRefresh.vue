@@ -1,7 +1,6 @@
 <template>
   <van-pull-refresh
-    v-model="load"
-    v-bind="_attribute"
+    v-bind="_pullAttribute"
     @refresh="handleRefresh"
     @change="handleChange"
     class="h-full"
@@ -10,27 +9,27 @@
       v-model:loading="list.loading"
       v-model.error="list.error"
       :finished="list.finished"
-      v-bind="props.listAttribute"
+      v-bind="_listAttribute"
     >
-      <slot></slot>
+      <slot>111</slot>
     </van-list>
   </van-pull-refresh>
 </template>
 
 <script setup lang="ts" name="XlPullRefresh">
-import type { ListProps } from 'vant'
+import type { PullRefreshProps, ListProps } from 'vant'
 
 const load = ref<boolean>(false)
 const count = ref<number>(0)
 const emit = defineEmits(['change'])
 
 interface PropsType {
-  attribute?: object
+  pullAttribute?: any
   listAttribute?: any
 }
 
 const props = withDefaults(defineProps<PropsType>(), {
-  attribute: () => {
+  pullAttribute: () => {
     return {}
   },
   listAttribute: () => {
@@ -47,19 +46,48 @@ const props = withDefaults(defineProps<PropsType>(), {
   }
 })
 
-const _attribute = ref({
+//下拉刷新属性
+const _pullAttribute = ref<PullRefreshProps>({
   ...{
-    'pulling-text': '下拉即可刷新...',
-    'loosing-text': '释放即可刷新...',
-    'loading-text': '数据加载中...',
-    'success-text': undefined,
-    'success-duration': 500,
-    'head-height': 50,
-    disabled: false
+    pullingtext: '下拉即可刷新...',
+    loosingtext: '释放即可刷新...',
+    loadingtext: '数据加载中...',
+    successText: undefined,
+    successDuration: 500,
+    animationDuration: 300,
+    headHeight: 50,
+    disabled: false,
+    modelValue: false
   },
-  ...props.attribute
+  ...props.pullAttribute
+})
+//列表属性
+const _listAttribute = ref<any>({
+  offset: 300,
+  loadingText: '数据加载中...',
+  finishedText: '没有更多了',
+  errorText: '数据加载失败，请联系管理员',
+  immediateCheck: true,
+  disabled: false,
+  direction: 'down',
+  scroller: undefined
+})
+//列表属性
+const list = reactive<ListProps>({
+  loading: false,
+  error: false,
+  finished: false,
+  offset: 300,
+  loadingText: '数据加载中...',
+  finishedText: '没有更多了',
+  errorText: '数据加载失败，请联系管理员',
+  immediateCheck: true,
+  disabled: false,
+  direction: 'down',
+  scroller: undefined
 })
 
+//下拉刷新数据
 const handleRefresh = (): void => {
   load.value = true
   setTimeout(() => {
@@ -77,16 +105,6 @@ const handleChange = ({
 }): void => {
   emit('change', status, distance)
 }
-
-const list = reactive<ListProps>({
-  loading: false,
-  error: false,
-  finished: false,
-  offset: props.listAttribute.offset,
-  disabled: props.listAttribute.disabled,
-  direction: props.listAttribute.direction,
-  immediateCheck: props.listAttribute.immediate
-})
 </script>
 
 <style scoped lang="scss">
