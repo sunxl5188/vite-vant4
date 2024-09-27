@@ -1,0 +1,69 @@
+@use 'sass:math';
+$baseSize: 16px;
+
+@media only screen and (max-width: 768px) {
+  html,
+  body {
+    font-size: math.div(768, 375) * $baseSize;
+  }
+}
+@media only screen and (max-width: 600px) {
+  html,
+  body {
+    font-size: math.div(600, 375) * $baseSize;
+  }
+}
+@media only screen and (max-width: 540px) {
+  html,
+  body {
+    font-size: math.div(540, 375) * $baseSize;
+  }
+}
+@media only screen and (max-width: 480px) {
+  html,
+  body {
+    font-size: math.div(480, 375) * $baseSize;
+  }
+}
+@media only screen and (max-width: 414px) {
+  html,
+  body {
+    font-size: math.div(414, 375) * $baseSize;
+  }
+}
+@media only screen and (max-width: 411px) {
+  html,
+  body {
+    font-size: math.div(411, 375) * $baseSize;
+  }
+}
+@media only screen and (max-width: 384px) {
+  html,
+  body {
+    font-size: math.div(384, 375) * $baseSize;
+  }
+}
+@media only screen and (max-width: 375px) {
+  html,
+  body {
+    font-size: math.div(375, 375) * $baseSize;
+  }
+}
+@media only screen and (max-width: 360px) {
+  html,
+  body {
+    font-size: math.div(360, 375) * $baseSize;
+  }
+}
+@media only screen and (max-width: 320px) {
+  html,
+  body {
+    font-size: math.div(320, 375) * $baseSize;
+  }
+}
+@media only screen and (min-width: 800px) {
+  html,
+  body {
+    font-size: $baseSize;
+  }
+}

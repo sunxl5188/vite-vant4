@@ -1,5 +1,7 @@
 <template>
   <div class="h-full bg-gray-200">
+    <div class="text-base">字体大小</div>
+    <div class="fontSize">font字体大小</div>
     <!-- <XlPullRefresh>1111</XlPullRefresh> -->
     <!-- <VirtuallyList /> -->
     <!-- <XlUploader />
@@ -109,3 +111,9 @@ onMounted(async () => {
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.fontSize {
+  font-size: 16px;
+}
+</style>
