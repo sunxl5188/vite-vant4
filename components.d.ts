@@ -7,6 +7,8 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    TextOverflowEllipsis: typeof import('./src/components/TextOverflowEllipsis.vue')['default']
+    TextOverlowEllipsis: typeof import('./src/components/TextOverlowEllipsis.vue')['default']
     VanButton: typeof import('vant/es')['Button']
     VanCascader: typeof import('vant/es')['Cascader']
     VanCell: typeof import('vant/es')['Cell']

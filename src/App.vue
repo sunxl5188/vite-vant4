@@ -2,6 +2,7 @@
   <div class="h-full bg-gray-200">
     <div class="text-base">字体大小</div>
     <div class="fontSize">font字体大小</div>
+    <div style="font-size: 16px">font16字体大小</div>
     <!-- <XlPullRefresh>1111</XlPullRefresh> -->
     <!-- <VirtuallyList /> -->
     <!-- <XlUploader />
@@ -21,11 +22,15 @@
       @change="onChange"
       @finish="onFinish"
     />
+    <hr />
+    <TextOverflowEllipsis :content="content" />
+    <div>---------------------</div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { fetch } from '@/utils/request'
+import TextOverflowEllipsis from '@/components/TextOverflowEllipsis.vue'
 //import XlPullRefresh from '../packages/pull-refresh/XlPullRefresh.vue'
 //import VirtuallyList from '../packages/virtually-list/XlVirtuallyList.vue'
 //import { getCurrentInstance, ComponentInternalInstance } from 'vue'
@@ -40,6 +45,10 @@ const value1 = ref<string>('2') */
 /* const handleConfirm = (date: string[]) => {
   value.value = date
 } */
+
+const content = ref(
+  `五百里滇池，奔来眼底，披襟岸帻，喜茫茫空阔无边。看东骧神骏，西翥灵仪，北走蜿蜒，南翔缟素。高人韵士，何妨选胜登临。趁蟹屿螺洲，梳裹就风鬟雾鬓；更苹天苇地，点缀些翠羽丹霞，莫辜负四围香稻，万顷晴`
+)
 
 const cascaderValue = ref('350211')
 const defaultValue = ['350000', '350200', '350211']
@@ -112,8 +121,21 @@ onMounted(async () => {
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .fontSize {
   font-size: 16px;
+}
+
+.container {
+  width: 100%; /* 或者具体宽度 */
+}
+.text-content {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 3; /* 显示3行后显示省略号 */
+  line-height: 1.2em; /* 根据需要调整 */
+  max-height: 3.6em; /* 3行的高度，根据line-height调整 */
 }
 </style>
