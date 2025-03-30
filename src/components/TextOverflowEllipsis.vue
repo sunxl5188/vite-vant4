@@ -1,28 +1,30 @@
 <template>
-  <div class="container" :style="isExceed && setBodyStyle">
-    <div
-      ref="contentRef"
-      class="container-text"
-      :style="`line-height:${lineHeight}px`"
-    >
-      {{ content }}
+  <div>
+    <div class="container" :style="isExceed && setBodyStyle">
+      <div
+        ref="contentRef"
+        class="container-text"
+        :style="`line-height:${lineHeight}px`"
+      >
+        {{ content }}
+      </div>
+      <div
+        class="container-content"
+        :class="contentClass"
+        :style="`line-height:${lineHeight}px`"
+      >
+        {{ content }}
+      </div>
     </div>
     <div
-      class="container-content"
-      :class="contentClass"
-      :style="`line-height:${lineHeight}px`"
+      v-if="isExceed"
+      class="container-button"
+      :class="{ open: !ellipsis }"
+      @click="handleTrigger"
     >
-      {{ content }}
+      <span>{{ ellipsis ? btnText[0] : btnText[1] }}</span>
+      <double-right-outlined />
     </div>
-  </div>
-  <div
-    v-if="isExceed"
-    class="container-button"
-    :class="{ open: !ellipsis }"
-    @click="handleTrigger"
-  >
-    <span>{{ ellipsis ? btnText[0] : btnText[1] }}</span>
-    <double-right-outlined />
   </div>
 </template>
 
