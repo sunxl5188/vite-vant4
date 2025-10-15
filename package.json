@@ -11,11 +11,15 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
-    "vue": "^3.3.11"
+    "big.js": "^7.0.1",
+    "crypto-js": "^4.2.0",
+    "vue": "^3.3.11",
+    "vue-i18n": "9.14.4"
   },
   "devDependencies": {
     "@babel/core": "^7.23.9",
     "@babel/eslint-parser": "^7.23.9",
+    "@types/crypto-js": "^4.2.2",
     "@types/node": "^20.11.10",
     "@typescript-eslint/eslint-plugin": "^6.19.1",
     "@typescript-eslint/parser": "^6.19.1",
@@ -43,7 +47,6 @@
     "vant": "^4.8.3",
     "vite": "^5.0.8",
     "vite-plugin-eslint": "^1.8.1",
-    "vite-plugin-style-vw-loader": "^1.0.7",
     "vite-plugin-vue-setup-extend": "^0.4.0",
     "vue-tsc": "^1.8.25"
   }

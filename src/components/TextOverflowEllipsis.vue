@@ -37,9 +37,9 @@ const props = defineProps({
   rows: { type: Number, default: 3 } // 显示多少行 1-6
 })
 
-const contentRef = ref(null)
+const contentRef = ref<any>(null)
 const ellipsis = ref(true) // 状态: true 收起 false 展开
-const contentHeight = ref(null) // 文本内容高度
+const contentHeight = ref(0) // 文本内容高度
 const contentClass = ref('line-clamp-' + props.rows) // 控制显示文本内容样式
 
 // 文本内容高度设置
@@ -65,8 +65,8 @@ const handleTrigger = () => {
 }
 
 onMounted(() => {
-  console.log(contentRef.value.clientHeight)
-  contentHeight.value = contentRef.value.clientHeight
+  console.log(contentRef.value?.clientHeight)
+  contentHeight.value = contentRef.value?.clientHeight
 })
 </script>
 

@@ -5,7 +5,6 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { VantResolver } from '@vant/auto-import-resolver'
 import VueSetupExtend from 'vite-plugin-vue-setup-extend'
-import vitePluginStyleVwLoader from 'vite-plugin-style-vw-loader'
 import { resolve } from 'path'
 
 // https://vitejs.dev/config/
@@ -14,8 +13,8 @@ export default ({ mode }: { mode: any }) => {
   return defineConfig({
     resolve: {
       alias: {
-        '@': resolve(__dirname, './src'),
-        'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js'
+        '@': resolve(__dirname, './src')
+        //'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js'
       }
     },
     css: {
@@ -29,15 +28,6 @@ export default ({ mode }: { mode: any }) => {
       }
     },
     plugins: [
-      // 该插件需要放在vue()之前
-      vitePluginStyleVwLoader({
-        unitToConvert: 'px',
-        viewportWidth: 16 * 100,
-        unitPrecision: 5,
-        viewportUnit: 'rem',
-        fontViewportUnit: 'rem',
-        minPixelValue: 1
-      }),
       vue(),
       VueSetupExtend(),
       eslintPlugin({

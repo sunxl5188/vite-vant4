@@ -4,20 +4,12 @@ declare interface Window {
   Vue: any
 }
 
-/* import dayjs from 'dayjs'
+//declare const __APP_PREFIX__: string
 
 declare module '*.vue' {
-  import type { DefineComponent } from 'vue'
-  const component: DefineComponent<{}, {}, any>
+  import { App, defineComponent } from 'vue'
+  const component: ReturnType<typeof defineComponent> & {
+    install(app: App): void
+  }
   export default component
 }
-
-
-//==========================
-export {}
-declare module 'vue' {
-  interface ComponentCustomProperties {
-    $dayjs(date?: dayjs.ConfigType): dayjs.Dayjs
-  }
-}
- */

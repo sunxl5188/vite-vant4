@@ -1,0 +1,9 @@
+{
+	"001": "Company name",
+	"apple": "no apples | one apple | {count} apples",
+	"car": "car | cars",
+	"title": "Title{0}",
+	"reuse": "@:apple 重用",
+	"login": "login",
+	"login2": "@.capitalize:login"
+}

@@ -1,25 +1,25 @@
-import { AppContext } from 'vue'
 import dayjs from 'dayjs'
-import 'dayjs/locale/zh-cn' //加载中文语言包
+import 'dayjs/locale/zh-cn'
+import 'dayjs/locale/en'
+import utc from 'dayjs/plugin/utc.js'
+import timezone from 'dayjs/plugin/timezone'
+import isBetween from 'dayjs/plugin/isBetween'
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
+import isToday from 'dayjs/plugin/isToday'
+import weekday from 'dayjs/plugin/weekday'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import arraySupport from 'dayjs/plugin/arraySupport'
-import toArray from 'dayjs/plugin/toArray'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
 
-dayjs.locale('zh-cn') //全局使用
-// 配置相对时间插件
+dayjs.locale('zh-cn')
+dayjs.extend(utc)
+dayjs.extend(timezone)
+dayjs.extend(isBetween)
+dayjs.extend(isSameOrAfter)
+dayjs.extend(isSameOrBefore)
+dayjs.extend(isToday)
+dayjs.extend(weekday)
 dayjs.extend(relativeTime)
-dayjs.extend(arraySupport)
-dayjs.extend(toArray)
+dayjs.extend(localizedFormat)
 
-export {}
-declare module 'vue' {
-  export interface ComponentCustomProperties {
-    $dayjs(date?: dayjs.ConfigType): dayjs.Dayjs
-  }
-}
-
-export default {
-  install(app: AppContext['app']) {
-    app.config.globalProperties.$dayjs = dayjs
-  }
-}
+export default dayjs
