@@ -8,15 +8,20 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    Cascader: typeof import('./src/components/cascader/index.vue')['default']
+    BaseForm: typeof import('./src/components/BaseForm/index.vue')['default']
+    FieldCalendar: typeof import('./src/components/FieldCalendar/index.vue')['default']
+    FieldCascader: typeof import('./src/components/FieldCascader/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     VanButton: typeof import('vant/es')['Button']
     VanCalendar: typeof import('vant/es')['Calendar']
     VanCascader: typeof import('vant/es')['Cascader']
-    VanCell: typeof import('vant/es')['Cell']
+    VanCellGroup: typeof import('vant/es')['CellGroup']
     VanConfigProvider: typeof import('vant/es')['ConfigProvider']
     VanField: typeof import('vant/es')['Field']
+    VanForm: typeof import('vant/es')['Form']
+    VanNavBar: typeof import('vant/es')['NavBar']
+    VanNumberKeyboard: typeof import('vant/es')['NumberKeyboard']
     VanPopup: typeof import('vant/es')['Popup']
     XlCheckbox: typeof import('./src/components/checkbox/XlCheckbox.vue')['default']
     XlDatePicker: typeof import('./src/components/date-picker/XlDatePicker.vue')['default']

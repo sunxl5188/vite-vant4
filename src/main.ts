@@ -6,6 +6,7 @@ import i18n from './i18n'
 import router from './router'
 import { createPinia } from 'pinia'
 import { createPersistedState } from 'pinia-plugin-persistedstate'
+import './utils/dayjs'
 //------------------------------
 import 'vant/es/toast/style'
 

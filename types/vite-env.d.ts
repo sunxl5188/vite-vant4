@@ -10,7 +10,7 @@ declare const window: any
 declare module '*.vue' {
   import { App, defineComponent } from 'vue'
   const component: ReturnType<typeof defineComponent> & {
-    install(app: App): void
+    install(_app: App): void
   }
   export default component
 }

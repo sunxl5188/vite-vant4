@@ -1,34 +1,33 @@
 <template>
-  <van-button type="primary">主要按钮</van-button>
-  <van-cell title="选择单个日期" :value="date" @click="show = true" />
-  <van-calendar v-model:show="show" @confirm="onConfirm" />
-  <!-- Trigger -->
-  <!-- <button
-    class="btn"
-    data-clipboard-text="Just because you can doesn't mean you should — clipboard.js"
-    @click="copyContent('.btn')"
-  >
-    Copy to clipboard
-  </button> -->
-  <Cascader v-model="value" />
+  <div class="font12">11111</div>
+  <div class="text-xs">11111</div>
+  {{ formData }}
+  <van-form @submit="onSubmit">
+    <van-cell-group inset>
+      <field-calender v-model="formData.date" />
+      <field-cascader v-model="formData.area" />
+      <div class="pt-4">
+        <van-button round block type="primary" native-type="submit">
+          提交
+        </van-button>
+      </div>
+    </van-cell-group>
+  </van-form>
 </template>
 
 <script setup lang="ts" name="HomeIndex">
 // import { useUserStore } from '@/store/userStore'
 // import dayjs from '@/utils/dayjs'
 // import { copyContent } from '@/utils'
-import Cascader from '@/components/cascader/index.vue'
-const value = ref<string>('320000,320100')
+import FieldCascader from '@/components/FieldCascader/index.vue'
+import FieldCalender from '@/components/FieldCalendar/index.vue'
 
-const date = ref('')
-const show = ref(false)
-
-const formatDate = (date: Date) => {
-  return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
-}
-const onConfirm = (value: any) => {
-  show.value = false
-  date.value = formatDate(value)
+const formData = ref({
+  date: '',
+  area: ''
+})
+const onSubmit = (values: any) => {
+  console.log('submit', values)
 }
 // const store = useUserStore()
 // console.log(store.name)
@@ -38,4 +37,8 @@ const onConfirm = (value: any) => {
 // console.log(dayjs().format('YYYY-MM-DD'))
 </script>
 
-<style scoped lang="less"></style>
+<style scoped>
+.font12 {
+  font-size: 12px;
+}
+</style>

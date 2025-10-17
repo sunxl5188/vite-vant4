@@ -1,11 +1,11 @@
 <template>
-  {{ cascaderValue }}
   <van-field
     v-model="fieldText"
     is-link
     readonly
-    label="地区"
+    :label="label"
     :placeholder="placeholder"
+    input-align="right"
     @click="handleShowPopup"
   />
   <van-popup v-model:show="visible" round position="bottom">
@@ -44,6 +44,10 @@ const props = defineProps({
   modelValue: {
     type: String,
     default: ''
+  },
+  label: {
+    type: String,
+    default: '地区'
   },
   placeholder: {
     type: String,
