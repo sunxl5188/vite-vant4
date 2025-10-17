@@ -1,10 +1,11 @@
 /// <reference types="vite/client" />
 
-declare interface Window {
+/* declare interface Window {
   Vue: any
 }
+ */
 
-//declare const __APP_PREFIX__: string
+declare const window: any
 
 declare module '*.vue' {
   import { App, defineComponent } from 'vue'

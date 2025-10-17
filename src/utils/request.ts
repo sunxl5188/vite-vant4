@@ -1,14 +1,5 @@
 //https://www.axios-http.cn/docs/intro
 //http://www.axios-js.com/zh-cn/docs/#axios-put-url-data-config
-import axios, {
-  AxiosRequestConfig,
-  AxiosResponse,
-  AxiosError,
-  InternalAxiosRequestConfig,
-  AxiosPromise
-} from 'axios'
-
-import { showToast } from 'vant'
 
 declare module 'axios' {
   //这里扩展里AxiosError类型
@@ -19,6 +10,17 @@ declare module 'axios' {
     code?: number
   }
 }
+
+import axios from 'axios'
+import type {
+  AxiosRequestConfig,
+  AxiosResponse,
+  AxiosError,
+  InternalAxiosRequestConfig,
+  AxiosPromise
+} from 'axios'
+
+import { showToast } from 'vant'
 
 const handleMessage = (content: string): void => {
   showToast(content)

@@ -1,65 +1,7 @@
-// TypeScript 编译器配置
 {
-  "compilerOptions": {
-  // 指定 ECMAScript 目标版本
-    "target": "ES2023",
-  // 使用类字段的 define 语法
-    "useDefineForClassFields": true,
-  // 指定模块系统
-    "module": "ESNext",
-  // 编译时包含的库文件
-    "lib": ["ES2023", "DOM","DOM.Iterable"],
-  // 跳过库文件类型检查，加快编译速度
-    "skipLibCheck": true,
-
-    /* Bundler mode */
-  /* Bundler mode 打包相关配置 */
-  // 模块解析策略
-    "moduleResolution": "bundler",
-  // 允许导入 .ts 扩展名文件
-    "allowImportingTsExtensions": true,
-  // 支持导入 JSON 文件为模块
-    "resolveJsonModule": true,
-  // 每个文件作为独立模块处理
-    "isolatedModules": true,
-  // 不生成编译输出文件
-    "noEmit": true,
-  // JSX 保持原样（用于 Vue/React）
-    "jsx": "preserve",
-
-    //"baseUrl": ".",
-    // 路径别名映射，@/* 可映射到 packages 和 src 目录
-    "paths": {
-      "@/*": ["./packages/*", "./src/*"]
-    },
-
-    /* Linting */
-  /* Linting 代码检查相关配置 */
-  // 启用所有严格类型检查
-    "strict": true,
-  // 检查未使用的局部变量
-    "noUnusedLocals": true,
-  // 检查未使用的参数
-    "noUnusedParameters": true,
-  // 禁止 switch 语句贯穿
-    "noFallthroughCasesInSwitch": true,
-    // 允许 ES 模块与 CommonJS 互操作
-    "esModuleInterop": true,
-  },
-  // 包含的文件和目录
-  "include": [
-    "src/**/*.ts", 
-    "src/**/*.tsx", 
-    "src/**/*.vue", 
-    "packages/**/*.vue", 
-    "packages/**/*.ts", 
-    "./auto-imports.d.ts"
-  ],
-    // 项目引用其他 tsconfig 文件
-  "references": [{ "path": "./tsconfig.node.json" }],
-  // 排除的文件和目录
-  "exclude": [
-    "node_modules",
-    "dist"
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
   ]
 }

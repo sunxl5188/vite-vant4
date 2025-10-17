@@ -1,17 +1,19 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-//import XlVant4 from './index'
-//import dayjs from '@/utils/dayjs'
-import i18n from '@/i18n'
-
-import '@/assets/styles/main.less'
+import '@/assets/styles/tailwindcss.css'
+import '@/assets/styles/base.scss'
+import i18n from './i18n'
+import router from './router'
+import { createPinia } from 'pinia'
+import { createPersistedState } from 'pinia-plugin-persistedstate'
+//------------------------------
 import 'vant/es/toast/style'
-import 'vant/es/dialog/style'
-import 'vant/es/notify/style'
-import 'vant/es/image-preview/style'
 
 const app = createApp(App)
+const pinia = createPinia()
+pinia.use(createPersistedState())
 
-//app.use(XlVant4)
 app.use(i18n)
+app.use(router)
+app.use(pinia)
 app.mount('#app')
