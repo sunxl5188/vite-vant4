@@ -71,6 +71,13 @@
   --van-radius-md: 4px;
   --van-radius-lg: 8px;
   --van-radius-max: 999px;
+
+  --van-picker-mask-color: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.9),
+      rgba(255, 255, 255, 0.4)
+    ),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.4));
 }
 
 html,

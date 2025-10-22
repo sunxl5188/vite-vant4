@@ -9,6 +9,7 @@ import { createPersistedState } from 'pinia-plugin-persistedstate'
 import './utils/dayjs'
 //------------------------------
 import 'vant/es/toast/style'
+import 'vant/es/dialog/style'
 
 const app = createApp(App)
 const pinia = createPinia()

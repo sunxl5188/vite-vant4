@@ -1,18 +1,14 @@
 <template>
   <van-field
     v-model="fieldText"
-    is-link
-    readonly
     :label="label"
     :placeholder="placeholder"
-    input-align="right"
-    required
-    :rules="[{ required: true, message: '请填写用户名' }]"
+    v-bind="state.getFieldValue"
     @click="handleShowPopup"
   />
   <van-calendar
     v-model:show="visible"
-    switch-mode="month"
+    v-bind="state.getBindValue"
     @confirm="handleConfirm"
   />
 </template>
@@ -23,9 +19,19 @@ import dayjs from 'dayjs'
 const props = defineProps({
   modelValue: { type: String, default: '' },
   label: { type: String, default: '日期' },
-  placeholder: { type: String, default: '' },
+  placeholder: { type: String, default: '请选择' },
   format: { type: String, default: 'll' },
-  valueFormat: { type: String, default: 'YYYY/MM/DD' }
+  valueFormat: { type: String, default: 'YYYY/MM/DD' },
+  //输入框属性
+  fieldAttributes: {
+    type: Object as PropType<Record<string, unknown>>,
+    default: () => ({})
+  },
+  //弹窗属性
+  attributes: {
+    type: Object as PropType<Record<string, unknown>>,
+    default: () => ({})
+  }
 })
 const emit = defineEmits(['update:modelValue'])
 
@@ -33,6 +39,23 @@ const state = reactive({
   fieldText: '',
   fieldValue: '',
   visible: false,
+  getFieldValue: computed(() => {
+    return {
+      'is-link': true,
+      readonly: true,
+      'input-align': 'right',
+      required: false,
+      rules: [],
+      ...props.fieldAttributes
+    }
+  }),
+  getBindValue: computed(() => {
+    return {
+      title: '选择日期',
+      'switch-mode': 'month',
+      ...props.attributes
+    }
+  }),
   handleShowPopup() {
     state.visible = true
   },

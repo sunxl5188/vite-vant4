@@ -1,18 +1,16 @@
 <template>
   <van-field
     v-model="fieldText"
-    is-link
-    readonly
     :label="label"
     :placeholder="placeholder"
-    input-align="right"
+    v-bind="state.getFieldValue"
     @click="handleShowPopup"
   />
   <van-popup v-model:show="visible" round position="bottom">
     <van-cascader
       v-model="cascaderValue"
-      :title="placeholder"
       :options="sourceData"
+      v-bind="state.getBindValue"
       @close="handleClose"
       @finish="handleFinish"
     />
@@ -21,6 +19,8 @@
 
 <script setup lang="ts" name="CascaderIndex">
 import type { CascaderFieldNames, CascaderOption } from 'vant'
+import cityJSON from './city.json'
+import { fetch } from '@/utils/request'
 
 interface HandleFinishParams {
   value: string | number
@@ -38,6 +38,8 @@ interface StateType {
   handleClose: () => void //关闭弹出层
   handleFinish: (_: HandleFinishParams) => void //完成选择
   handleGetText: (_: string) => void //获取text
+  getFieldValue: Record<string, any> //输入框属性
+  getBindValue: Record<string, any> //弹窗属性
 }
 
 const props = defineProps({
@@ -57,6 +59,10 @@ const props = defineProps({
     type: Array as PropType<CascaderOption[]>,
     default: () => []
   },
+  api: {
+    type: String,
+    default: ''
+  },
   fieldNames: {
     type: Object as PropType<CascaderFieldNames>,
     default: () => ({
@@ -64,6 +70,16 @@ const props = defineProps({
       value: 'value',
       children: 'children'
     })
+  },
+  //输入框属性
+  fieldAttributes: {
+    type: Object as PropType<Record<string, unknown>>,
+    default: () => ({})
+  },
+  //弹窗属性
+  attributes: {
+    type: Object as PropType<Record<string, unknown>>,
+    default: () => ({})
   }
 })
 
@@ -74,18 +90,23 @@ const state = reactive<StateType>({
   fieldText: '',
   fieldValue: '',
   cascaderValue: '',
-  sourceData: [
-    {
-      text: '浙江省',
-      value: '330000',
-      children: [{ text: '杭州市', value: '330100' }]
-    },
-    {
-      text: '江苏省',
-      value: '320000',
-      children: [{ text: '南京市', value: '320100' }]
+  getFieldValue: computed(() => {
+    return {
+      'is-link': true,
+      readonly: true,
+      'input-align': 'right',
+      required: false,
+      rules: [],
+      ...props.fieldAttributes
     }
-  ],
+  }),
+  getBindValue: computed(() => {
+    return {
+      title: '请选择',
+      ...props.attributes
+    }
+  }),
+  sourceData: cityJSON.city as CascaderOption[],
   //显示弹出层
   handleShowPopup() {
     state.visible = true
@@ -124,6 +145,18 @@ const state = reactive<StateType>({
     emit('update:modelValue', state.fieldValue)
     emit('update:text', state.fieldText)
     state.visible = false
+  }
+})
+
+onBeforeMount(async () => {
+  if (props.api) {
+    //这里可以根据传入的api请求数据
+    const { code, data } = await fetch(props.api)
+    if (code === 200) {
+      state.sourceData = data
+    }
+  } else if (props.options?.length) {
+    state.sourceData = props.options
   }
 })
 
