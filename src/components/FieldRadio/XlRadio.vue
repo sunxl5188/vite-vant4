@@ -59,5 +59,3 @@ const handleToggle = (i: number): void => {
   checkValue.value = radioRefs.value[i].name
 }
 </script>
-
-<style scoped land="scss"></style>

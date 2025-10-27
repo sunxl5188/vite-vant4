@@ -1,5 +1,5 @@
 <template>
-  <van-config-provider theme="dark" class="min-h-full">
+  <van-config-provider>
     <router-view />
   </van-config-provider>
 </template>

@@ -11,6 +11,7 @@
 import type { UploaderFileListItem } from 'vant'
 import { showDialog } from 'vant'
 import { post } from '@/utils/request'
+import { uploadApi, deleteFileApi } from '@/utils'
 
 interface StateType {
   fileList: UploaderFileListItem[]
@@ -93,7 +94,7 @@ const state = reactive<StateType>({
       const headers = {
         'Content-Type': 'multipart/form-data'
       }
-      const { code, data } = await post('/api/index/upload', formData, {
+      const { code, data } = await post(uploadApi, formData, {
         headers
       })
       if (code === 200) {
@@ -109,7 +110,7 @@ const state = reactive<StateType>({
   },
   // 删除文件
   async handleDelete({ url }) {
-    await post('/api/index/deleteFile', { url })
+    await post(deleteFileApi, { url })
   }
 })
 

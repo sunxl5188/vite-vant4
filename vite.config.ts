@@ -6,7 +6,7 @@ import Components from 'unplugin-vue-components/vite'
 import { VantResolver } from '@vant/auto-import-resolver'
 import VueSetupExtend from 'vite-plugin-vue-setup-extend'
 import tsconfigPaths from 'vite-tsconfig-paths'
-import { viteVConsole } from 'vite-plugin-vconsole'
+//import { viteVConsole } from 'vite-plugin-vconsole'
 import tailwindcss from '@tailwindcss/vite'
 import { fileURLToPath, URL } from 'node:url'
 import postcssPxToViewport from 'postcss-px-to-viewport-8-plugin'
@@ -55,14 +55,15 @@ export default ({ mode }: { mode: any }) => {
     plugins: [
       vue(),
       tsconfigPaths({ loose: true }),
-      viteVConsole({
+      //todo-xl vconsole只在开发环境使用
+      /* viteVConsole({
         entry: fileURLToPath(new URL('./src/main.ts', import.meta.url)),
         enabled: env.NODE_ENV === 'development', // 可自行结合 mode 和 command 进行判断
         config: {
           maxLogNumber: 1000,
           theme: 'dark'
         }
-      }),
+      }), */
       tailwindcss(),
       Components({
         resolvers: [VantResolver()]

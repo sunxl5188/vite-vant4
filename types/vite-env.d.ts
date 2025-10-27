@@ -4,7 +4,8 @@
   Vue: any
 }
  */
-
+declare module 'vue-virtual-scroller'
+declare module 'sockjs-client/dist/sockjs.min.js'
 declare const window: any
 
 declare module '*.vue' {

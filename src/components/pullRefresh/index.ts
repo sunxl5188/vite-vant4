@@ -1,5 +1,5 @@
-import XlPullRefsh from './XlPullRefresh.vue'
-;(XlPullRefsh as any).install = (Vue: any) => {
-  Vue.component((XlPullRefsh as any).extendOptions.name, XlPullRefsh)
+import PullRefresh from './index.vue'
+;(PullRefresh as any).install = (Vue: any) => {
+  Vue.component((PullRefresh as any).extendOptions.name, PullRefresh)
 }
-export default XlPullRefsh
+export default PullRefresh

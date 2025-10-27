@@ -217,11 +217,12 @@ instance.interceptors.response.use(
  */
 export const fetch = (
   url: string,
+  params: object = {},
   config?: AxiosRequestConfig
 ): AxiosPromise => {
   return new Promise((resolve, reject) => {
     instance
-      .get(url, { ...config })
+      .get(url, { params: params, ...config })
       .then(response => resolve(response))
       .catch(error => reject(error))
   })

@@ -11,11 +11,22 @@
       finished-text="没有更多了"
       @load="onLoad"
     >
-      <div v-for="(item, i) in sourceData" :key="i">
-        <slot :row="item">
-          <van-cell :title="item.title" />
-        </slot>
-      </div>
+      <DynamicScroller :items="sourceData" :min-item-size="54" class="h-full">
+        <template #default="{ item, index, active }">
+          <DynamicScrollerItem
+            :item="item"
+            :active="active"
+            :size-dependencies="[item.message]"
+            :data-index="index"
+          >
+            <slot :row="item">
+              <div class="leading-7 p-4 border-b border-gray-200">
+                {{ item.title }}
+              </div>
+            </slot>
+          </DynamicScrollerItem>
+        </template>
+      </DynamicScroller>
     </van-list>
   </van-pull-refresh>
 </template>
@@ -37,11 +48,27 @@ interface StateType {
   onRefresh: () => void
 }
 
-defineProps({
-  // 是否禁用下拉刷新
+const props = defineProps({
+  /**
+   * @是否禁用下拉刷新
+   */
   disabled: {
     type: Boolean,
     default: false
+  },
+  /**
+   * @接口地址
+   */
+  api: {
+    type: String,
+    default: '/api/index/article'
+  },
+  /**
+   * @每页条数
+   */
+  pageSize: {
+    type: Number,
+    default: 10
   }
 })
 
@@ -52,15 +79,15 @@ const state = reactive<StateType>({
   finished: false, // 是否全部加载完成
   pages: {
     currentPage: 1,
-    pageSize: 10
+    pageSize: props.pageSize
   },
   // 上拉加载
   onLoad: throttle(
     () => {
       state.loading = true
-      const timeout = state.pages.currentPage === 1 ? 0 : 500
+      const timeout = state.pages.currentPage === 1 ? 0 : 1000
       setTimeout(async () => {
-        const { code, data } = await post('/api/index/article', {
+        const { code, data } = await post(props.api, {
           ...state.pages
         })
         if (code === 200) {

@@ -173,7 +173,7 @@ const state = reactive({
 onBeforeMount(async () => {
   if (props.api) {
     //这里可以根据传入的api请求数据
-    const { code, data } = await fetch(props.api, { params: props.params })
+    const { code, data } = await fetch(props.api, { ...props.params })
     if (code === 200) {
       state.sourceData = data
     }

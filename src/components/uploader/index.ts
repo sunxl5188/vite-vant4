@@ -1,5 +1,5 @@
-import XlUploader from './XlUploader.vue'
-;(XlUploader as any).install = (Vue: any) => {
-  Vue.component((XlUploader as any).extendOptions.name, XlUploader)
+import Uploader from './index.vue'
+;(Uploader as any).install = (Vue: any) => {
+  Vue.component((Uploader as any).extendOptions.name, Uploader)
 }
-export default XlUploader
+export default Uploader

@@ -82,7 +82,8 @@
 
 html,
 body,
-#app {
+#app,
+.van-config-provider {
   height: 100%;
   overflow-y: auto;
 }

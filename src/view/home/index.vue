@@ -1,7 +1,5 @@
 <template>
-  <PullRefresh />
+  <div>1111</div>
 </template>
 
-<script setup lang="ts" name="HomeIndex">
-import PullRefresh from '@/components/pullRefresh/index.vue'
-</script>
+<script setup lang="ts" name="HomeIndex"></script>
