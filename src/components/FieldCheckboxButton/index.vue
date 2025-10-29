@@ -1,24 +1,24 @@
 <template>
   <van-field :label="label" required="auto" v-bind="state.getFieldValue">
-    <template #input>
-      <van-checkbox-group
-        v-model="state.checkboxValue"
-        v-bind="state.getBindValue"
-        @change="state.handleChange"
-      >
-        <van-checkbox
-          v-for="(item, index) in state.sourceData"
-          :key="item[fieldNames.value || 'value'] + index"
-          :name="item[fieldNames.value || 'value']"
-        >
-          {{ item[fieldNames.text || 'text'] }}
-        </van-checkbox>
-      </van-checkbox-group>
-    </template>
+    <template #input></template>
   </van-field>
+  <div
+    class="flex justify-start items-start flex-wrap px-4 pt-[10px]"
+    style="border-bottom: 1px solid var(--van-cell-border-color)"
+  >
+    <div
+      v-for="(item, i) in state.sourceData"
+      :key="i"
+      class="checkboxButton"
+      :class="state.isActive(item[fieldNames.value || 'value'])"
+      @click="state.handleSelect(item)"
+    >
+      {{ item[fieldNames.text || 'text'] }}
+    </div>
+  </div>
 </template>
 
-<script setup lang="ts" name="FieldCheckbox">
+<script setup lang="ts" name="FieldCheckboxButton">
 import { dictApi } from '@/utils'
 import { fetch } from '@/utils/request'
 
@@ -57,11 +57,6 @@ const props = defineProps({
   fieldAttr: {
     type: Object as PropType<Record<string, unknown>>,
     default: () => ({})
-  },
-  // 组件属性
-  attr: {
-    type: Object as PropType<Record<string, unknown>>,
-    default: () => ({})
   }
 })
 
@@ -79,11 +74,9 @@ const state = reactive({
       ...props.fieldAttr
     }
   }),
-  getBindValue: computed((): Partial<{ [key: string]: any }> => {
-    return {
-      direction: 'horizontal',
-      shape: 'round',
-      ...props.attr
+  isActive: computed(() => {
+    return (val: string) => {
+      return state.checkboxValue.includes(val) ? 'active' : ''
     }
   }),
   // 加载数据
@@ -112,8 +105,14 @@ const state = reactive({
     )
     emit('update:text', state.checkboxText)
   },
-  // 处理值变化
-  handleChange() {
+  // 选择
+  handleSelect(item: any) {
+    const val = item[props.fieldNames.value || 'value']
+    if (state.checkboxValue.includes(val)) {
+      state.checkboxValue = state.checkboxValue.filter(o => o !== val)
+    } else {
+      state.checkboxValue.push(val)
+    }
     emit('update:modelValue', state.checkboxValue)
   }
 })
@@ -137,3 +136,48 @@ watch(
   { immediate: true }
 )
 </script>
+
+<style scoped lang="scss">
+.checkboxButton {
+  padding: 3px 10px;
+  border: 1px solid var(--van-button-default-border-color);
+  color: var(--van-button-default-color);
+  background-color: var(--van-button-default-background);
+  border-radius: var(--van-button-radius);
+  margin-right: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  &.active {
+    border-color: var(--van-button-primary-border-color);
+    color: var(--van-button-primary-background);
+    background-color: var(--van-button-plain-background);
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 10px;
+      height: 10px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23FFFFFF' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 8l4 4 8-8'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      z-index: 2;
+    }
+    &::before {
+      content: '';
+      position: absolute;
+      display: block;
+      right: 0;
+      bottom: 0;
+      z-index: 1;
+      width: 0;
+      height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid var(--van-button-primary-background);
+      border-bottom: 8px solid var(--van-button-primary-background);
+      border-top: 8px solid transparent;
+    }
+  }
+}
+</style>

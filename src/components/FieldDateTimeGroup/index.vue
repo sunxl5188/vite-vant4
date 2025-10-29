@@ -2,7 +2,7 @@
   <van-field
     v-model="fieldText"
     :label="label"
-    :placeholder="placeholder"
+    required="auto"
     v-bind="state.getFieldValue"
     @click="handleShowPopup"
   />
@@ -12,13 +12,20 @@
       @confirm="onConfirm"
       @cancel="onCancel"
     >
-      <van-date-picker v-model="state.currentDate" />
-      <van-time-picker v-model="state.currentTime" />
+      <van-date-picker
+        v-model="state.currentDate"
+        v-bind="state.getBindDateAttr"
+      />
+      <van-time-picker
+        v-model="state.currentTime"
+        v-bind="state.getBindTimeAttr"
+      />
     </van-picker-group>
   </van-popup>
 </template>
 
 <script setup lang="ts" name="FieldDateTimeGroup">
+import type { PickerOption } from 'vant'
 import dayjs from 'dayjs'
 
 const props = defineProps({
@@ -26,15 +33,22 @@ const props = defineProps({
     type: String,
     default: ''
   },
-  label: { type: String, default: '选择器' },
-  placeholder: { type: String, default: '请选择' },
+  label: { type: String, default: '' },
   //输入框属性
-  fieldAttributes: {
+  fieldAttr: {
     type: Object as PropType<Record<string, unknown>>,
     default: () => ({})
   },
   //弹窗属性
-  attributes: {
+  attr: {
+    type: Object as PropType<Record<string, unknown>>,
+    default: () => ({})
+  },
+  dateAttr: {
+    type: Object as PropType<Record<string, unknown>>,
+    default: () => ({})
+  },
+  timeAttr: {
     type: Object as PropType<Record<string, unknown>>,
     default: () => ({})
   }
@@ -51,10 +65,9 @@ const state = reactive({
     return {
       'is-link': true,
       readonly: true,
-      'input-align': 'right',
-      required: false,
+      placeholder: '请选择日期时间',
       rules: [],
-      ...props.fieldAttributes
+      ...props.fieldAttr
     }
   }),
   getBindValue: computed(() => {
@@ -62,7 +75,26 @@ const state = reactive({
       title: '预约日期',
       tabs: ['选择日期', '选择时间'],
       'next-step-text': '下一步',
-      ...props.attributes
+      ...props.attr
+    }
+  }),
+  getBindDateAttr: computed(() => {
+    return {
+      formatter: (type: string, option: PickerOption) => {
+        if (type === 'year') {
+          option.text += '年'
+        }
+        if (type === 'month') {
+          option.text += '月'
+        }
+        return option
+      },
+      ...props.dateAttr
+    }
+  }),
+  getBindTimeAttr: computed(() => {
+    return {
+      ...props.timeAttr
     }
   }),
   //显示选择器

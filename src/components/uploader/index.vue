@@ -3,6 +3,7 @@
     v-model="fileList"
     :before-read="beforeRead"
     :after-read="afterRead"
+    v-bind="state.getBindValue"
     @delete="handleDelete"
   />
 </template>
@@ -18,6 +19,7 @@ interface StateType {
   beforeRead: (_file: File | File[]) => boolean | Promise<File | File[]>
   afterRead: (_file: UploaderFileListItem | UploaderFileListItem[]) => void
   handleDelete: (_file: UploaderFileListItem) => void
+  getBindValue: ComputedRef<Record<string, unknown>>
 }
 
 const props = defineProps({
@@ -25,8 +27,10 @@ const props = defineProps({
     type: Array as PropType<UploaderFileListItem[]>,
     default: () => []
   },
-  accept: { type: String, default: '.jpg,.jpeg,.png,.gif' }, //上传文件类型
-  fileSize: { type: Number, default: 1 } //上传大小限制，单位MB
+  attr: {
+    type: Object as any,
+    default: () => ({})
+  }
 })
 
 const emit = defineEmits(['update:modelValue'])
@@ -45,7 +49,8 @@ const state = reactive<StateType>({
     const newFileList: File[] = []
     const errorSuffix = []
     const errorSize = []
-    const accept = props.accept.toLowerCase().split(',')
+    const attr: any = state.getBindValue
+    const accept = attr.accept.toLowerCase().split(',')
     for (const item of fileList) {
       const fileSuffix = item.name
         .substring(item.name.lastIndexOf('.'))
@@ -55,8 +60,8 @@ const state = reactive<StateType>({
       }
 
       const size = item.size / 1024 / 1024
-      if (props.fileSize < size) {
-        errorSize.push(`文件 ${item.name} 超过 ${props.fileSize}MB 大小限制`)
+      if (attr.fileSize < size) {
+        errorSize.push(`文件 ${item.name} 超过 ${attr.fileSize}MB 大小限制`)
       } else {
         newFileList.push(item)
       }
@@ -65,7 +70,7 @@ const state = reactive<StateType>({
       showDialog({
         title: '温馨提示',
         message:
-          `上传文件只能是 ${props.accept} 格式!\n以下文件不允许上传:\n` +
+          `上传文件只能是 ${attr.accept} 格式!\n以下文件不允许上传:\n` +
           errorSuffix.map(item => item + '\n').join('')
       })
     } else if (errorSize.length) {
@@ -107,11 +112,19 @@ const state = reactive<StateType>({
       }
       delete item.file
     }
+    emit('update:modelValue', state.fileList)
   },
   // 删除文件
   async handleDelete({ url }) {
     await post(deleteFileApi, { url })
-  }
+  },
+  getBindValue: computed(() => {
+    return {
+      accept: '.jpg,.jpeg,.png,.gif',
+      fileSize: 1,
+      ...props.attr
+    }
+  })
 })
 
 watch(
@@ -120,14 +133,6 @@ watch(
     if (newValue) {
       state.fileList = newValue
     }
-  },
-  { deep: true, immediate: true }
-)
-
-watch(
-  () => state.fileList,
-  () => {
-    emit('update:modelValue', state.fileList)
   },
   { deep: true, immediate: true }
 )

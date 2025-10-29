@@ -2,7 +2,7 @@
   <van-field
     v-model="fieldText"
     :label="label"
-    :placeholder="placeholder"
+    required="auto"
     v-bind="state.getFieldValue"
     @click="handleShowPopup"
   />
@@ -23,18 +23,19 @@ import dayjs from 'dayjs'
 
 const props = defineProps({
   modelValue: {
-    type: String,
-    default: ''
+    type: Array as PropType<Array<string>>,
+    default: () => {
+      return []
+    }
   },
-  label: { type: String, default: '选择器' },
-  placeholder: { type: String, default: '请选择' },
+  label: { type: String, default: '' },
   //输入框属性
-  fieldAttributes: {
+  fieldAttr: {
     type: Object as PropType<Record<string, unknown>>,
     default: () => ({})
   },
   //弹窗属性
-  attributes: {
+  attr: {
     type: Object as PropType<Record<string, unknown>>,
     default: () => ({})
   },
@@ -61,18 +62,17 @@ const state = reactive({
     return {
       'is-link': true,
       readonly: true,
-      'input-align': 'right',
-      required: false,
+      placeholder: '请选择时间范围',
       rules: [],
-      ...props.fieldAttributes
+      ...props.fieldAttr
     }
   }),
   getBindValue: computed(() => {
     return {
-      title: '预约日期',
-      tabs: ['选择开始日期', '选择结束日期'],
+      title: '预约时间',
+      tabs: ['开始时间', '结束时间'],
       'next-step-text': '下一步',
-      ...props.attributes
+      ...props.attr
     }
   }),
   getBindStart: computed(() => {
@@ -96,7 +96,8 @@ const state = reactive({
     state.showPicker = false
   },
   //设置值
-  handleSetValue(startTime?: string, endTime?: string) {
+  handleSetValue() {
+    const [startTime, endTime] = props.modelValue
     const currentTime: string[] = dayjs().format('HH:mm').split(':')
     const defaultArr = [currentTime[0] || '0', currentTime[1] || '0']
     state.startTime = startTime ? startTime.split(':') : defaultArr
@@ -107,8 +108,8 @@ const state = reactive({
     const startTime = state.startTime.join(':')
     const endTime = state.endTime.join(':')
     const value = [startTime, endTime]
-    state.fieldText = value.join(' 至 ')
-    emit('update:modelValue', value.join(','))
+    state.fieldText = value.join('至')
+    emit('update:modelValue', value)
     state.onCancel()
   }
 })
@@ -116,16 +117,14 @@ const state = reactive({
 watch(
   () => props.modelValue,
   () => {
-    if (props.modelValue) {
-      const [startTime, endTime] = props.modelValue.split(',')
-      state.fieldText = `${startTime} 至 ${endTime}`
-      state.handleSetValue(startTime || '', endTime || '')
+    if (props.modelValue?.length) {
+      state.fieldText = props.modelValue.join('至')
     } else {
       state.fieldText = ''
-      state.handleSetValue()
     }
+    state.handleSetValue()
   },
-  { deep: true, immediate: true }
+  { immediate: true }
 )
 
 const { showPicker, onCancel, fieldText, handleShowPopup, onConfirm } =

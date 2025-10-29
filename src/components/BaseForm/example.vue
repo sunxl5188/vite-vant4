@@ -34,7 +34,7 @@
   </BaseForm>
 </template>
 
-<script setup lang="ts" name="HomeIndex">
+<script setup lang="ts">
 import type { FormItemType } from '@/components/BaseForm'
 import BaseForm from '@/components/BaseForm'
 

@@ -2,7 +2,7 @@
   <van-field
     v-model="fieldText"
     :label="label"
-    :placeholder="placeholder"
+    required="auto"
     v-bind="state.getFieldValue"
     @click="handleShowPopup"
   />
@@ -18,33 +18,34 @@
   </van-popup>
 </template>
 
-<script setup lang="ts" name="FieldDateRangeGroup">
+<script setup lang="ts" name="FieldDateGroup">
 import dayjs from 'dayjs'
 
 const props = defineProps({
   modelValue: {
-    type: String,
-    default: ''
+    type: Array as PropType<string[]>,
+    default: () => {
+      return []
+    }
   },
-  label: { type: String, default: '选择器' },
-  placeholder: { type: String, default: '请选择' },
+  label: { type: String, default: '' },
   //输入框属性
-  fieldAttributes: {
+  fieldAttr: {
     type: Object as PropType<Record<string, unknown>>,
     default: () => ({})
   },
   //弹窗属性
-  attributes: {
+  attr: {
     type: Object as PropType<Record<string, unknown>>,
     default: () => ({})
   },
   //日期选择器属性
-  startAttributes: {
+  startAttr: {
     type: Object as PropType<Record<string, unknown>>,
     default: () => ({})
   },
   //日期选择器属性
-  endAttributes: {
+  endAttr: {
     type: Object as PropType<Record<string, unknown>>,
     default: () => ({})
   }
@@ -61,10 +62,8 @@ const state = reactive({
     return {
       'is-link': true,
       readonly: true,
-      'input-align': 'right',
-      required: false,
       rules: [],
-      ...props.fieldAttributes
+      ...props.fieldAttr
     }
   }),
   getBindValue: computed(() => {
@@ -72,18 +71,18 @@ const state = reactive({
       title: '预约日期',
       tabs: ['选择开始日期', '选择结束日期'],
       'next-step-text': '下一步',
-      ...props.attributes
+      ...props.attr
     }
   }),
   getBindStart: computed(() => {
     return {
-      ...props.startAttributes
+      ...props.startAttr
     }
   }),
   getBindEnd: computed((): any => {
     return {
       'min-date': dayjs(state.startDate.join('-') || undefined).toDate(),
-      ...props.endAttributes
+      ...props.endAttr
     }
   }),
   //显示选择器
@@ -111,8 +110,8 @@ const state = reactive({
       dayjs(startDate).format('YYYY-MM-DD'),
       dayjs(endDate).format('YYYY-MM-DD')
     ]
-    state.fieldText = value.join(' 至 ')
-    emit('update:modelValue', value.join(','))
+    state.fieldText = value.join('至')
+    emit('update:modelValue', value)
     state.onCancel()
   }
 })
@@ -120,9 +119,9 @@ const state = reactive({
 watch(
   () => props.modelValue,
   () => {
-    if (props.modelValue) {
-      const [startDate, endDate] = props.modelValue.split(',')
-      state.fieldText = `${dayjs(startDate).format('YYYY-MM-DD')} 至 ${dayjs(
+    if (props.modelValue?.length) {
+      const [startDate, endDate] = props.modelValue
+      state.fieldText = `${dayjs(startDate).format('YYYY-MM-DD')}至${dayjs(
         endDate
       ).format('YYYY-MM-DD')}`
       state.handleSetValue(startDate, endDate)

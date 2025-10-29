@@ -2,7 +2,7 @@
   <van-field
     v-model="fieldText"
     :label="label"
-    :placeholder="placeholder"
+    required="auto"
     v-bind="state.getFieldValue"
     @click="handleShowPopup"
   />
@@ -49,11 +49,7 @@ const props = defineProps({
   },
   label: {
     type: String,
-    default: '地区'
-  },
-  placeholder: {
-    type: String,
-    default: '请选择所在地区'
+    default: ''
   },
   options: {
     type: Array as PropType<CascaderOption[]>,
@@ -72,12 +68,12 @@ const props = defineProps({
     })
   },
   //输入框属性
-  fieldAttributes: {
+  fieldAttr: {
     type: Object as PropType<Record<string, unknown>>,
     default: () => ({})
   },
   //弹窗属性
-  attributes: {
+  attr: {
     type: Object as PropType<Record<string, unknown>>,
     default: () => ({})
   }
@@ -94,16 +90,15 @@ const state = reactive<StateType>({
     return {
       'is-link': true,
       readonly: true,
-      'input-align': 'right',
-      required: false,
+      placeholder: '请选择地区',
       rules: [],
-      ...props.fieldAttributes
+      ...props.fieldAttr
     }
   }),
   getBindValue: computed(() => {
     return {
       title: '请选择',
-      ...props.attributes
+      ...props.attr
     }
   }),
   sourceData: cityJSON.city as CascaderOption[],

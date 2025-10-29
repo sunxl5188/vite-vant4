@@ -2,7 +2,7 @@
   <van-field
     v-model="fieldText"
     :label="label"
-    :placeholder="placeholder"
+    required="auto"
     v-bind="state.getFieldValue"
     @click="handleShowPopup"
   />
@@ -18,7 +18,7 @@
   </van-popup>
 </template>
 
-<script setup lang="ts" name="FieldDatePicker">
+<script setup lang="ts" name="FieldDate">
 import type { PickerOption } from 'vant'
 import dayjs from 'dayjs'
 
@@ -27,15 +27,14 @@ const props = defineProps({
     type: String,
     default: ''
   },
-  label: { type: String, default: '选择器' },
-  placeholder: { type: String, default: '请选择' },
+  label: { type: String, default: '' },
   //输入框属性
-  fieldAttributes: {
+  fieldAttr: {
     type: Object as PropType<Record<string, unknown>>,
     default: () => ({})
   },
   //弹窗属性
-  attributes: {
+  attr: {
     type: Object as PropType<Record<string, unknown>>,
     default: () => ({})
   }
@@ -52,16 +51,15 @@ const state = reactive({
     return {
       'is-link': true,
       readonly: true,
-      'input-align': 'right',
-      required: false,
+      placeholder: '请选择日期',
       rules: [],
-      ...props.fieldAttributes
+      ...props.fieldAttr
     }
   }),
   getBindValue: computed(() => {
     return {
       title: '请选择日期',
-      ...props.attributes
+      ...props.attr
     }
   }),
   formatter: (type: string, option: PickerOption) => {
@@ -70,9 +68,6 @@ const state = reactive({
     }
     if (type === 'month') {
       option.text += '月'
-    }
-    if (type === 'day') {
-      option.text += '日'
     }
     return option
   },

@@ -1,17 +1,21 @@
 <template>
-  <van-radio-group v-model="state.checkboxValue" @change="state.handleChange">
-    <van-cell
-      v-for="(item, i) in state.sourceData"
-      :key="i"
-      :title="item[fieldNames.text || 'text']"
-      clickable
-      @click="state.checkboxValue = item[fieldNames.value || 'value']"
-    >
-      <template #right-icon>
-        <van-radio :name="item[fieldNames.value || 'value']" />
-      </template>
-    </van-cell>
-  </van-radio-group>
+  <van-field :label="label" required="auto" v-bind="state.getFieldValue">
+    <template #input>
+      <van-radio-group
+        v-model="state.checkboxValue"
+        v-bind="state.getBindValue"
+        @change="state.handleChange"
+      >
+        <van-radio
+          v-for="(item, i) in state.sourceData"
+          :key="i"
+          :name="item[fieldNames.value || 'value']"
+        >
+          {{ item[fieldNames.text || 'text'] }}
+        </van-radio>
+      </van-radio-group>
+    </template>
+  </van-field>
 </template>
 
 <script setup lang="ts" name="FieldRadio">
@@ -19,6 +23,10 @@ import { dictApi } from '@/utils'
 import { fetch } from '@/utils/request'
 
 const props = defineProps({
+  label: {
+    type: String,
+    default: ''
+  },
   // 绑定值
   modelValue: {
     type: String,
@@ -43,6 +51,16 @@ const props = defineProps({
       text: 'text',
       value: 'value'
     })
+  },
+  //输入框属性
+  fieldAttr: {
+    type: Object as PropType<Record<string, unknown>>,
+    default: () => ({})
+  },
+  // 组件属性
+  attr: {
+    type: Object as PropType<Record<string, unknown>>,
+    default: () => ({})
   }
 })
 
@@ -52,6 +70,20 @@ const state = reactive({
   checkboxValue: '' as string, //选中值
   checkboxText: '' as string, //选中文本
   sourceData: [] as any[], // 数据源
+  getFieldValue: computed(() => {
+    return {
+      readonly: true,
+      rules: [],
+      ...props.fieldAttr
+    }
+  }),
+  getBindValue: computed((): Partial<{ [key: string]: any }> => {
+    return {
+      direction: 'horizontal',
+      shape: 'round',
+      ...props.attr
+    }
+  }),
   // 加载数据
   async handleLoad() {
     let apiUrl = ''

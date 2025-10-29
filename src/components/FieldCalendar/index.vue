@@ -2,13 +2,14 @@
   <van-field
     v-model="fieldText"
     :label="label"
-    :placeholder="placeholder"
+    required="auto"
     v-bind="state.getFieldValue"
     @click="handleShowPopup"
   />
   <van-calendar
     v-model:show="visible"
     v-bind="state.getBindValue"
+    :default-date="state.defaultDate"
     @confirm="handleConfirm"
   />
 </template>
@@ -18,17 +19,16 @@ import dayjs from 'dayjs'
 
 const props = defineProps({
   modelValue: { type: String, default: '' },
-  label: { type: String, default: '日期' },
-  placeholder: { type: String, default: '请选择' },
+  label: { type: String, default: '' },
   format: { type: String, default: 'll' },
-  valueFormat: { type: String, default: 'YYYY/MM/DD' },
+  valueFormat: { type: String, default: 'YYYY-MM-DD' },
   //输入框属性
-  fieldAttributes: {
+  fieldAttr: {
     type: Object as PropType<Record<string, unknown>>,
     default: () => ({})
   },
   //弹窗属性
-  attributes: {
+  attr: {
     type: Object as PropType<Record<string, unknown>>,
     default: () => ({})
   }
@@ -43,26 +43,51 @@ const state = reactive({
     return {
       'is-link': true,
       readonly: true,
-      'input-align': 'right',
-      required: false,
+      placeholder: '请选择日期',
       rules: [],
-      ...props.fieldAttributes
+      ...props.fieldAttr
     }
   }),
-  getBindValue: computed(() => {
+  getBindValue: computed((): any => {
     return {
       title: '选择日期',
       'switch-mode': 'month',
-      ...props.attributes
+      type: 'single',
+      ...props.attr
     }
+  }),
+  defaultDate: computed(() => {
+    const { type } = state.getBindValue
+    const currDay = dayjs().toDate()
+    if (type === 'single') {
+      return props.modelValue ? dayjs(props.modelValue).toDate() : currDay
+    }
+    if (props.modelValue) {
+      const dates = props.modelValue.split(',')
+      return dates.map(item => dayjs(item).toDate())
+    }
+    return currDay
   }),
   handleShowPopup() {
     state.visible = true
   },
-  handleConfirm(value: Date) {
+  handleConfirm(value: Date | Date[]) {
+    if (state.getBindValue.type === 'single') {
+      state.fieldText = dayjs(value as Date).format(props.format)
+      state.fieldValue = dayjs(value as Date).format(props.valueFormat)
+    } else {
+      let separator = ','
+      if (state.getBindValue.type === 'range') {
+        separator = ' 至 '
+      }
+      state.fieldText = (value as Date[])
+        .map(item => dayjs(item).format(props.format))
+        .join(separator)
+      state.fieldValue = (value as Date[])
+        .map(item => dayjs(item).format(props.valueFormat))
+        .join(',')
+    }
     state.visible = false
-    state.fieldText = dayjs(value).format(props.format)
-    state.fieldValue = dayjs(value).format(props.valueFormat)
     emit('update:modelValue', state.fieldValue)
   }
 })
@@ -73,8 +98,21 @@ watch(
   () => props.modelValue,
   newVal => {
     if (newVal) {
+      const { type } = state.getBindValue
       state.fieldValue = newVal
-      state.fieldText = dayjs(newVal).format(props.format)
+      if (type === 'single') {
+        state.fieldText = dayjs(newVal).format(props.format)
+      } else if (type === 'range') {
+        const dates = newVal.split(',')
+        state.fieldText = dates
+          .map(item => dayjs(item).format(props.format))
+          .join(' 至 ')
+      } else {
+        const dates = newVal.split(',')
+        state.fieldText = dates
+          .map(item => dayjs(item).format(props.format))
+          .join(',')
+      }
     }
   },
   { immediate: true }

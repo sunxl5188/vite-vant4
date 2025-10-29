@@ -2,7 +2,7 @@
   <van-field
     v-model="fieldText"
     :label="label"
-    :placeholder="placeholder"
+    required="auto"
     v-bind="state.getFieldValue"
     @click="handleShowPopup"
   />
@@ -19,6 +19,7 @@
 
 <script setup lang="ts" name="FieldPicker">
 import type { PickerColumn, PickerOption, PickerFieldNames } from 'vant'
+import { dictApi } from '@/utils'
 import { fetch } from '@/utils/request'
 
 const props = defineProps({
@@ -26,8 +27,7 @@ const props = defineProps({
     type: String,
     default: ''
   },
-  label: { type: String, default: '选择器' },
-  placeholder: { type: String, default: '请选择' },
+  label: { type: String, default: '' },
   columns: {
     type: Array as PropType<PickerColumn>,
     default: () => [
@@ -77,16 +77,17 @@ const props = defineProps({
       }
     ]
   },
-  api: {
-    type: String,
-    default: ''
-  },
-  params: {
-    type: Object as PropType<{ [key: string]: any }>,
-    default: () => ({})
-  },
-  columnsFieldNames: {
-    type: Object as PropType<PickerFieldNames>,
+  // 选项数据
+  options: { type: Array, default: () => [] },
+  // 字典类型
+  dict: { type: String, default: '' },
+  // 接口地址
+  api: { type: String, default: '' },
+  // 接口参数
+  params: { type: Object, default: () => ({}) },
+  // 字段映射
+  fieldNames: {
+    type: Object,
     default: () => ({
       text: 'text',
       value: 'value',
@@ -94,12 +95,12 @@ const props = defineProps({
     })
   },
   //输入框属性
-  fieldAttributes: {
+  fieldAttr: {
     type: Object as PropType<Record<string, unknown>>,
     default: () => ({})
   },
   //弹窗属性
-  attributes: {
+  attr: {
     type: Object as PropType<Record<string, unknown>>,
     default: () => ({})
   }
@@ -116,17 +117,16 @@ const state = reactive({
     return {
       'is-link': true,
       readonly: true,
-      'input-align': 'right',
-      required: false,
+      placeholder: '请选择',
       rules: [],
-      ...props.fieldAttributes
+      ...props.fieldAttr
     }
   }),
   getBindValue: computed(() => {
     return {
       title: '请选择',
-      'columns-field-names': props.columnsFieldNames,
-      ...props.attributes
+      columnsFieldNames: props.fieldNames,
+      ...props.attr
     }
   }),
   //显示选择器
@@ -136,7 +136,7 @@ const state = reactive({
   //获取显示文本
   handleQueryText() {
     const texts: string[] = []
-    const { text, children } = props.columnsFieldNames
+    const { text, children } = props.fieldNames
     const loopText = (data: PickerOption[]) => {
       data.some((item: PickerOption) => {
         if (state.pickerValue.includes(item.value as string)) {
@@ -159,7 +159,7 @@ const state = reactive({
     selectedValues: string[]
     selectedOptions: PickerOption[]
   }) {
-    const { text } = props.columnsFieldNames
+    const { text } = props.fieldNames as PickerFieldNames
     state.showPicker = false
     state.pickerValue = selectedValues
     state.fieldText = selectedOptions
@@ -167,17 +167,29 @@ const state = reactive({
       .join('/')
     emit('update:modelValue', selectedValues.join(','))
     emit('update:text', state.fieldText)
-  }
-})
-
-onBeforeMount(async () => {
-  if (props.api) {
-    //这里可以根据传入的api请求数据
-    const { code, data } = await fetch(props.api, { ...props.params })
+  },
+  // 加载数据
+  async handleLoad() {
+    let apiUrl = ''
+    let params
+    if (props.dict) {
+      apiUrl = dictApi
+      params = { type: props.dict }
+    } else if (props.api) {
+      apiUrl = props.api
+      params = { type: props.params }
+    }
+    const { code, data } = await fetch(apiUrl, params)
     if (code === 200) {
       state.sourceData = data
     }
-  } else if (props.columns?.length) {
+  }
+})
+
+onMounted(() => {
+  if (props.api || props.dict) {
+    state.handleLoad()
+  } else {
     state.sourceData = props.columns
   }
 })
