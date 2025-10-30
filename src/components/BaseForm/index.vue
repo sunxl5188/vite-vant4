@@ -155,20 +155,48 @@
 <script setup lang="ts" name="BaseForm">
 import type { PickerFieldNames } from 'vant'
 import type { FormItemType } from './index'
-import FieldCalender from '@/components/FieldCalendar'
-import FieldCascader from '@/components/FieldCascader'
-import FieldCheckbox from '@/components/FieldCheckbox'
-import FieldCheckboxButton from '@/components/FieldCheckboxButton'
-import FieldRadio from '@/components/FieldRadio'
-import FieldSwitch from '@/components/FieldSwitch'
-import FieldDateGroup from '@/components/FieldDateGroup'
-import FieldDateTimeGroup from '@/components/FieldDateTimeGroup'
-import FieldDate from '@/components/FieldDate'
-import FieldTime from '@/components/FieldTime'
-import FieldTimeGroup from '@/components/FieldTimeGroup'
-import FieldUpload from '@/components/FieldUpload'
-import FieldPicker from '@/components/FieldPicker'
-import FieldPickerTag from '@/components/FieldPickerTag'
+const FieldCalender = defineAsyncComponent(
+  () => import(/* webpackPrefetch: true */ '@/components/FieldCalendar')
+)
+const FieldCascader = defineAsyncComponent(
+  () => import(/* webpackPrefetch: true */ '@/components/FieldCascader')
+)
+const FieldCheckbox = defineAsyncComponent(
+  () => import(/* webpackPrefetch: true */ '@/components/FieldCheckbox')
+)
+const FieldCheckboxButton = defineAsyncComponent(
+  () => import(/* webpackPrefetch: true */ '@/components/FieldCheckboxButton')
+)
+const FieldRadio = defineAsyncComponent(
+  () => import(/* webpackPrefetch: true */ '@/components/FieldRadio')
+)
+const FieldSwitch = defineAsyncComponent(
+  () => import(/* webpackPrefetch: true */ '@/components/FieldSwitch')
+)
+const FieldDateGroup = defineAsyncComponent(
+  () => import(/* webpackPrefetch: true */ '@/components/FieldDateGroup')
+)
+const FieldDateTimeGroup = defineAsyncComponent(
+  () => import(/* webpackPrefetch: true */ '@/components/FieldDateTimeGroup')
+)
+const FieldDate = defineAsyncComponent(
+  () => import(/* webpackPrefetch: true */ '@/components/FieldDate')
+)
+const FieldTime = defineAsyncComponent(
+  () => import(/* webpackPrefetch: true */ '@/components/FieldTime')
+)
+const FieldTimeGroup = defineAsyncComponent(
+  () => import(/* webpackPrefetch: true */ '@/components/FieldTimeGroup')
+)
+const FieldUpload = defineAsyncComponent(
+  () => import(/* webpackPrefetch: true */ '@/components/FieldUpload')
+)
+const FieldPicker = defineAsyncComponent(
+  () => import(/* webpackPrefetch: true */ '@/components/FieldPicker')
+)
+const FieldPickerTag = defineAsyncComponent(
+  () => import(/* webpackPrefetch: true */ '@/components/FieldPickerTag')
+)
 
 interface PropsType {
   formItem?: FormItemType[]
