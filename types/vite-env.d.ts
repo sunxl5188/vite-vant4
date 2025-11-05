@@ -6,6 +6,7 @@
  */
 declare module 'vue-virtual-scroller'
 declare module 'sockjs-client/dist/sockjs.min.js'
+declare module 'vue3-qr-reader'
 declare const window: any
 
 declare module '*.vue' {

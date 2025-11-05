@@ -1,9 +1,9 @@
 import ClipboardJS from 'clipboard'
 
 // 系统字典接口
-export const dictApi = '/api/index/getSystemDict'
-export const uploadApi = '/api/index/upload'
-export const deleteFileApi = '/api/index/deleteFile'
+export const dictApi = '/home/index/getSystemDict'
+export const uploadApi = '/home/index/upload'
+export const deleteFileApi = '/home/index/deleteFile'
 
 /**
  * @复制文本

@@ -53,6 +53,9 @@ importers:
       vue-virtual-scroller:
         specifier: 2.0.0-beta.8
         version: 2.0.0-beta.8(vue@3.5.22(typescript@5.9.3))
+      vue3-qr-reader:
+        specifier: ^1.0.0
+        version: 1.0.0
     devDependencies:
       '@babel/eslint-parser':
         specifier: ^7.28.4
@@ -1679,6 +1682,9 @@ packages:
     engines: {node: '>=6'}
     hasBin: true
 
+  jsqr@1.4.0:
+    resolution: {integrity: sha512-dxLob7q65Xg2DvstYkRpkYtmKm2sPJ9oFhrhmudT1dZvNFFTlroai3AWSpLey/w5vMcLBXRgOJsbXpdN9HzU/A==}
+
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
@@ -2407,6 +2413,9 @@ packages:
     resolution: {integrity: sha512-b8/f5NQ5nIEBRTNi6GcPItE4s7kxNHw2AIHLtDp+2QvqdTjVN0FgONwX9cr53jWRgnu+HRLPaWDOR2JPI5MTfQ==}
     peerDependencies:
       vue: ^3.2.0
+
+  vue3-qr-reader@1.0.0:
+    resolution: {integrity: sha512-BRgmR+lDPkNwgL6skSaEOGFg4Aup/FLYnOGFCV0knYHxfbAnliJN/+wr//iqD2G3EOBrXw4TPGNfj/5Wxl7wwQ==}
 
   vue@3.5.22:
     resolution: {integrity: sha512-toaZjQ3a/G/mYaLSbV+QsQhIdMo9x5rrqIpYRObsJ6T/J+RyCSFwN2LHNVH9v8uIcljDNa3QzPVdv3Y6b9hAJQ==}
@@ -3940,6 +3949,8 @@ snapshots:
 
   json5@2.2.3: {}
 
+  jsqr@1.4.0: {}
+
   keyv@4.5.4:
     dependencies:
       json-buffer: 3.0.1
@@ -4614,6 +4625,10 @@ snapshots:
       vue: 3.5.22(typescript@5.9.3)
       vue-observe-visibility: 2.0.0-alpha.1(vue@3.5.22(typescript@5.9.3))
       vue-resize: 2.0.0-alpha.1(vue@3.5.22(typescript@5.9.3))
+
+  vue3-qr-reader@1.0.0:
+    dependencies:
+      jsqr: 1.4.0
 
   vue@3.5.22(typescript@5.9.3):
     dependencies:
