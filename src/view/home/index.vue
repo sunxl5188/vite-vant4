@@ -1,6 +1,7 @@
 <template>
   <div class="p-4">
-    <div id="map" style="width: 100%; height: 16px"></div>
+    <div class="h-[100px]">100px</div>
+    <div id="map" style="width: 100%; height: 16px">16px</div>
     <div>{{ state }}</div>
     <div>
       <van-button type="primary" @click="handleUpdate">主要按钮</van-button>
