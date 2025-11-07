@@ -7,7 +7,9 @@
 declare module 'vue-virtual-scroller'
 declare module 'sockjs-client/dist/sockjs.min.js'
 declare module 'vue3-qr-reader'
+declare module 'vite-plugin-vue-style-px-to-viewport'
 declare const window: any
+declare const SGMap: any
 
 declare module '*.vue' {
   import { App, defineComponent } from 'vue'

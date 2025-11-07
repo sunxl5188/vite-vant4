@@ -1,9 +1,6 @@
 <template>
   <div class="p-4">
-    <QrCode />
-    <div v-dict="{ '2': '2' }">
-      <!-- 11111 -->
-    </div>
+    <div id="map" style="width: 100%; height: 16px"></div>
     <div>{{ state }}</div>
     <div>
       <van-button type="primary" @click="handleUpdate">主要按钮</van-button>
@@ -14,8 +11,6 @@
 </template>
 
 <script setup lang="ts" name="HomeIndex">
-import QrCode from '@/components/QrCode'
-
 const state = shallowRef({
   name: 'home index',
   age: 100

@@ -10,6 +10,7 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 import tailwindcss from '@tailwindcss/vite'
 import { fileURLToPath, URL } from 'node:url'
 import postcssPxToViewport from 'postcss-px-to-viewport-8-plugin'
+import vitePluginStyleToVw from 'vite-plugin-style-to-vw'
 
 // https://vite.dev/config/
 export default ({ mode }: { mode: any }) => {
@@ -53,6 +54,16 @@ export default ({ mode }: { mode: any }) => {
       }
     },
     plugins: [
+      vitePluginStyleToVw({
+        allReplace: false,
+        unitToConvert: 'px',
+        viewportWidth: 16 * 100,
+        unitPrecision: 5,
+        viewportUnit: 'rem',
+        fontViewportUnit: 'rem',
+        minPixelValue: 1,
+        attributeList: []
+      }),
       vue(),
       tsconfigPaths({ loose: true }),
       //todo-xl vconsole只在开发环境使用

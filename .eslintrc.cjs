@@ -32,7 +32,8 @@ module.exports = {
     defineProps: 'readonly',
     defineEmits: 'readonly',
     defineExpose: 'readonly',
-    withDefaults: 'readonly'
+    withDefaults: 'readonly',
+    SGMap: 'readonly'
   },
   // 这里时配置规则的,自己看情况配置
   rules: {

@@ -28,6 +28,7 @@ declare module 'vue' {
     QrCode: typeof import('./src/components/QrCode/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SgMap: typeof import('./src/components/SgMap/index.vue')['default']
     Uploader: typeof import('./src/components/Uploader/index.vue')['default']
     VanButton: typeof import('vant/es')['Button']
     VanConfigProvider: typeof import('vant/es')['ConfigProvider']
