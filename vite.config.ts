@@ -9,10 +9,13 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 import { viteVConsole } from 'vite-plugin-vconsole'
 import tailwindcss from '@tailwindcss/vite'
 import { fileURLToPath, URL } from 'node:url'
+import vitePluginStyleToVw from 'vite-plugin-style-to-vw'
 
 // https://vite.dev/config/
 export default ({ mode }: { mode: any }) => {
   const env = loadEnv(mode, process.cwd(), '')
+  console.log('🚀 ~ env:', env)
+
   return defineConfig({
     resolve: {
       alias: {
@@ -31,8 +34,19 @@ export default ({ mode }: { mode: any }) => {
       }
     },
     plugins: [
+      vitePluginStyleToVw({
+        allReplace: false,
+        unitToConvert: 'px',
+        viewportWidth: 16 * 100,
+        unitPrecision: 5,
+        viewportUnit: 'rem',
+        fontViewportUnit: 'rem',
+        minPixelValue: 1,
+        attributeList: []
+      }),
       vue(),
       tsconfigPaths({ loose: true }),
+      //todo-xl vconsole只在开发环境使用
       viteVConsole({
         entry: fileURLToPath(new URL('./src/main.ts', import.meta.url)),
         enabled: env.NODE_ENV === 'development', // 可自行结合 mode 和 command 进行判断

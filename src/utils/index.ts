@@ -1,4 +1,10 @@
 import ClipboardJS from 'clipboard'
+import { useAppStore } from '@/store/useAppStore'
+
+// 系统字典接口
+export const dictApi = '/home/index/getSystemDict'
+export const uploadApi = '/home/index/upload'
+export const deleteFileApi = '/home/index/deleteFile'
 
 /**
  * @复制文本
@@ -6,7 +12,6 @@ import ClipboardJS from 'clipboard'
  * @官方地址 https://clipboardjs.uihtm.com/
  */
 export function copyContent(el: string) {
-  let a
   const clipboard = new ClipboardJS(el)
   clipboard.on('success', function (e) {
     console.info('Action:', e.action)
@@ -19,4 +24,34 @@ export function copyContent(el: string) {
     console.error('Action:', e.action)
     console.error('Trigger:', e.trigger)
   })
+}
+
+/**
+ * 引用assets下的图片
+ * @param fileName 图片名
+ * @returns 返回图片地址
+ */
+export const getAssetsFile = (fileName: string) => {
+  const path: string = `../assets/images/${fileName}`
+  return new URL(path, import.meta.url).href
+}
+
+/**
+ * @查找字典名称
+ * @param dictType 字典类型
+ * @param value 字典对应的值
+ * @returns 返回名称
+ */
+export function getDictFilter(dictType: string, value: string): string {
+  let result = '--'
+  if (!dictType || !value) {
+    return result
+  }
+  const appStore = useAppStore()
+  const dictData = appStore.dictData[dictType] || []
+  const dictItem = dictData.find((item: any) => item.value === value)
+  if (dictItem) {
+    result = dictItem.text || '--'
+  }
+  return result
 }

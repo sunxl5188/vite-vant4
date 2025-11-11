@@ -1,41 +1,31 @@
 <template>
-  <van-button type="primary">主要按钮</van-button>
-  <van-cell title="选择单个日期" :value="date" @click="show = true" />
-  <van-calendar v-model:show="show" @confirm="onConfirm" />
-  <!-- Trigger -->
-  <!-- <button
-    class="btn"
-    data-clipboard-text="Just because you can doesn't mean you should — clipboard.js"
-    @click="copyContent('.btn')"
-  >
-    Copy to clipboard
-  </button> -->
-  <Cascader v-model="value" />
+  <div class="p-4">
+    <div>{{ getDictFilter('area', '0592') }}</div>
+    <div>{{ state }}</div>
+    <div>
+      <van-button type="primary" @click="handleUpdate">主要按钮</van-button>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts" name="HomeIndex">
-// import { useUserStore } from '@/store/userStore'
-// import dayjs from '@/utils/dayjs'
-// import { copyContent } from '@/utils'
-import Cascader from '@/components/cascader/index.vue'
-const value = ref<string>('320000,320100')
+import { useAppStore } from '@/store/useAppStore'
+import { getDictFilter } from '@/utils'
 
-const date = ref('')
-const show = ref(false)
+const appStore = useAppStore()
+appStore.setDictData()
+const state = shallowRef({
+  name: 'home index',
+  age: 100,
+  dictName: ''
+})
 
-const formatDate = (date: Date) => {
-  return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
+const handleUpdate = () => {
+  state.value.age += 1
+  triggerRef(state)
 }
-const onConfirm = (value: any) => {
-  show.value = false
-  date.value = formatDate(value)
-}
-// const store = useUserStore()
-// console.log(store.name)
-// store.setName('李四')
-// console.log(store.getName)
 
-// console.log(dayjs().format('YYYY-MM-DD'))
+onMounted(async () => {
+  //----
+})
 </script>
-
-<style scoped lang="less"></style>

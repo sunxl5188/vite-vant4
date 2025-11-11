@@ -5,7 +5,13 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('@/view/home/index.vue')
+    component: () => import(/* webpackPrefetch: true */ '@/view/home/index.vue')
+  },
+  {
+    path: '/stomp',
+    name: 'Stomp',
+    component: () =>
+      import(/* webpackPrefetch: true */ '@/view/stomp/index.vue')
   }
 ]
 

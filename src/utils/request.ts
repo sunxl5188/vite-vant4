@@ -167,9 +167,8 @@ instance.interceptors.response.use(
     // 请求成功
     if (config.status === 200 || config.status === 204) {
       return Promise.resolve(config.data)
-    } else {
-      return Promise.reject(config)
     }
+    return Promise.reject(config)
   }, // 请求失败
   function (error: AxiosError) {
     const { response, config } = error
@@ -201,12 +200,11 @@ instance.interceptors.response.use(
       }
 
       return Promise.reject(response)
-    } else {
-      // 处理断网的情况
-      // eg:请求超时或断网时，更新state的network状态
-      // network状态在app.vue中控制着一个全局的断网提示组件的显示隐藏
-      // 后续增加断网情况下做的一些操作
     }
+    // 处理断网的情况
+    // eg:请求超时或断网时，更新state的network状态
+    // network状态在app.vue中控制着一个全局的断网提示组件的显示隐藏
+    // 后续增加断网情况下做的一些操作
   }
 )
 
@@ -219,11 +217,12 @@ instance.interceptors.response.use(
  */
 export const fetch = (
   url: string,
+  params: object = {},
   config?: AxiosRequestConfig
 ): AxiosPromise => {
   return new Promise((resolve, reject) => {
     instance
-      .get(url, { ...config })
+      .get(url, { params: params, ...config })
       .then(response => resolve(response))
       .catch(error => reject(error))
   })
