@@ -14,7 +14,7 @@ declare const SGMap: any
 declare module '*.vue' {
   import { App, defineComponent } from 'vue'
   const component: ReturnType<typeof defineComponent> & {
-    install(_app: App): void
+    install(app: App): void
   }
   export default component
 }

@@ -16,5 +16,6 @@ export const useUserStore = defineStore('user', {
     getName(): string {
       return this.name + '---'
     }
-  }
+  },
+  persist: true
 })

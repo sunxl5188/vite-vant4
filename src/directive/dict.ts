@@ -20,7 +20,7 @@ export default {
         }
         if (dict && binding.value[dict]) {
           const value = binding.value[dict]
-          const { code, data } = await fetch(dictApi, { type: dict })
+          const { code, data } = await fetch(dictApi, { dictType: dict })
           if (code === 200) {
             let dictItem = ''
             const dataList = data.map((item: any) => {

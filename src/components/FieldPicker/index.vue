@@ -28,6 +28,7 @@ const props = defineProps({
     default: ''
   },
   label: { type: String, default: '' },
+  // 选项数据
   columns: {
     type: Array as PropType<PickerColumn>,
     default: () => [
@@ -77,8 +78,6 @@ const props = defineProps({
       }
     ]
   },
-  // 选项数据
-  options: { type: Array, default: () => [] },
   // 字典类型
   dict: { type: String, default: '' },
   // 接口地址

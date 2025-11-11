@@ -32,6 +32,10 @@ declare module 'vue' {
     VanButton: typeof import('vant/es')['Button']
     VanConfigProvider: typeof import('vant/es')['ConfigProvider']
     VanField: typeof import('vant/es')['Field']
+    VanList: typeof import('vant/es')['List']
+    VanPicker: typeof import('vant/es')['Picker']
+    VanPopup: typeof import('vant/es')['Popup']
+    VanPullRefresh: typeof import('vant/es')['PullRefresh']
     XlRadio: typeof import('./src/components/FieldRadio/XlRadio.vue')['default']
   }
 }

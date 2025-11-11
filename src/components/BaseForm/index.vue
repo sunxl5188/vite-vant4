@@ -117,7 +117,7 @@
         :label="item.label"
         :field-attr="state.fieldAttrComputed(item)"
         :attr="item.attr || {}"
-        :options="item.data?.options || []"
+        :columns="item.data?.options || []"
         :dict="item.data?.dict || ''"
         :api="item.data?.api || ''"
         :params="item.data?.params || {}"

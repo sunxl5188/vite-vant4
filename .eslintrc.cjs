@@ -100,7 +100,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
-        varsIgnorePattern: '^_', // 使用正则表达式忽略以_开头的变量，包括接口属性
+        varsIgnorePattern: '^_|^I[A-Z]', // 使用正则表达式忽略以_开头的变量，包括接口属性
         argsIgnorePattern: '^_' // 同理，对于函数参数也适用
       }
     ],
@@ -129,5 +129,6 @@ module.exports = {
         math: 'always'
       }
     ]
-  }
+  },
+  ignorePatterns: ['*.d.ts'] // 排除所有 .d.ts 文件的 ESLint 校验
 }
