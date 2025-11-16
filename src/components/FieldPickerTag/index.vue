@@ -64,8 +64,6 @@ interface PropsType {
   label: string
   // 列数据
   columns?: Array<any>
-  // 选项数据
-  options?: Array<any>
   // 字典类型
   dict?: string
   // 接口地址
@@ -85,7 +83,6 @@ const props = withDefaults(defineProps<PropsType>(), {
   text: '',
   label: '',
   columns: () => [],
-  options: () => [],
   dict: '',
   api: '',
   params: () => ({}),

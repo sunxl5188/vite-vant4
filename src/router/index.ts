@@ -8,10 +8,9 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackPrefetch: true */ '@/view/home/index.vue')
   },
   {
-    path: '/about',
-    name: 'About',
-    component: () =>
-      import(/* webpackPrefetch: true */ '@/view/about/index.vue')
+    path: '/form',
+    name: 'Form',
+    component: () => import(/* webpackPrefetch: true */ '@/view/form/index.vue')
   },
   {
     path: '/stomp',
