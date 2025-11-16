@@ -1,6 +1,8 @@
-module.exports = {
+export default {
   plugins: {
-    'postcss-px-to-viewport': {
+    tailwindcss: {},
+    autoprefixer: {},
+    'postcss-px-to-viewport-8-plugin': {
       viewportWidth: 16 * 100, // 设计稿的视口宽度
       unitPrecision: 5, // 单位转换后保留的精度
       propList: ['*'], // 能转化为vw的属性列表

@@ -8,6 +8,12 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackPrefetch: true */ '@/view/home/index.vue')
   },
   {
+    path: '/about',
+    name: 'About',
+    component: () =>
+      import(/* webpackPrefetch: true */ '@/view/about/index.vue')
+  },
+  {
     path: '/stomp',
     name: 'Stomp',
     component: () =>
@@ -16,7 +22,7 @@ const routes: Array<RouteRecordRaw> = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.VITE_BASE),
   routes
 })
 

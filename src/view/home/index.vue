@@ -1,9 +1,12 @@
 <template>
-  <div class="p-4">
-    <div>{{ getDictFilter('area', '0592') }}</div>
+  <div class="p-4 bg-gray-300 min-h-screen">
+    <div style="height: 30px" class="h-[30px]">
+      {{ getDictFilter('area', '0592') }}
+    </div>
     <div>{{ state }}</div>
     <div>
       <van-button type="primary" @click="handleUpdate">主要按钮</van-button>
+      <van-button type="primary" to="/about">About</van-button>
     </div>
   </div>
 </template>

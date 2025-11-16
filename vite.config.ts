@@ -7,16 +7,17 @@ import { VantResolver } from '@vant/auto-import-resolver'
 import VueSetupExtend from 'vite-plugin-vue-setup-extend'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { viteVConsole } from 'vite-plugin-vconsole'
-import tailwindcss from '@tailwindcss/vite'
 import { fileURLToPath, URL } from 'node:url'
 import vitePluginStyleToVw from 'vite-plugin-style-to-vw'
+import { createHtmlPlugin } from 'vite-plugin-html'
 
 // https://vite.dev/config/
 export default ({ mode }: { mode: any }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  console.log('🚀 ~ env:', env)
+  console.log('🚀 ~ env:', env.VITE_BASE)
 
   return defineConfig({
+    base: env.VITE_BASE,
     resolve: {
       alias: {
         // '@': resolve(__dirname, 'src')
@@ -55,7 +56,6 @@ export default ({ mode }: { mode: any }) => {
           theme: 'dark'
         }
       }),
-      tailwindcss(),
       Components({
         resolvers: [VantResolver()]
       }),
@@ -84,6 +84,14 @@ export default ({ mode }: { mode: any }) => {
           'src/*.vue'
         ],
         exclude: ['node_modules', 'dist']
+      }),
+      createHtmlPlugin({
+        minify: true,
+        inject: {
+          data: {
+            title: env.VITE_APP_TITLE
+          }
+        }
       })
     ],
     server: {
@@ -98,6 +106,40 @@ export default ({ mode }: { mode: any }) => {
           // 带选项写法：http://localhost:5173/api/bar -> http://jsonplaceholder.typicode.com/bar
           rewrite: (path: any) => path.replace(RegExp(`^${env.VITE_API}`), '')
         }
+      }
+    },
+    build: {
+      outDir: 'dist/app',
+      sourcemap: false,
+      minify: 'terser',
+      terserOptions: {
+        enclose: false
+      },
+      rollupOptions: {
+        output: {
+          // 自定义代码分割中产生的 chunk 的文件名
+          chunkFileNames: 'js/[name]-[hash].js',
+          //指定入口文件的文件名模式
+          entryFileNames: 'js/[name]-[hash].js',
+          //自定义构建结果中的静态资源名称
+          assetFileNames: '[ext]/[name]-[hash].[ext]',
+          manualChunks(id) {
+            // 将所有来自 node_modules 的模块单独打包到一个文件中
+            if (id.includes('node_modules')) {
+              return id
+                .toString()
+                .split('node_modules/')[1]
+                .split('/')[0]
+                .toString()
+            }
+          }
+        },
+        //用于指定打包时应该将哪些模块作为外部模块处理
+        //external: ['axios'], // 指定 axios 为外部模块
+        // 指定要使用的 Rollup 插件
+        plugins: [
+          // 在这里添加 Rollup 插件
+        ]
       }
     }
   })
