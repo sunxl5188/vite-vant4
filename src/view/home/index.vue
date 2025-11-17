@@ -5,8 +5,7 @@
     </div>
     <div>{{ state }}</div>
     <div>
-      <van-button type="primary" @click="handleUpdate">主要按钮</van-button>
-      <van-button type="primary" to="/about">About</van-button>
+      <van-button type="primary" @click="handleUpdate">点击更新</van-button>
     </div>
   </div>
 </template>

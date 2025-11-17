@@ -109,7 +109,7 @@ export default ({ mode }: { mode: any }) => {
       }
     },
     build: {
-      outDir: 'dist/app',
+      outDir: 'dist' + env.VITE_BASE,
       sourcemap: false,
       minify: 'terser',
       terserOptions: {
@@ -141,6 +141,9 @@ export default ({ mode }: { mode: any }) => {
           // 在这里添加 Rollup 插件
         ]
       }
+    },
+    optimizeDeps: {
+      exclude: ['stompjs/lib/stomp-node.js']
     }
   })
 }

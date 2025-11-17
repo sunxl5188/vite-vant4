@@ -1,7 +1,11 @@
 <template>
   <van-config-provider>
-    <van-button type="primary" to="/">首页</van-button>
-    <van-button type="primary" to="/form">表单示例</van-button>
+    <div class="fixed left-0 top-0 right-0 z-20">
+      <van-space class="text-blue-500">
+        <router-link to="/">首页</router-link>
+        <router-link type="primary" to="/form">表单示例</router-link>
+      </van-space>
+    </div>
     <router-view />
   </van-config-provider>
 </template>
