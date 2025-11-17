@@ -1,6 +1,6 @@
 <template>
   <BaseForm
-    :ref="el => (state.formRef = el)"
+    ref="formRef"
     :form-item="state.formItem"
     :rules="state.rules"
     @submit="state.handleInSubmit"
@@ -40,16 +40,16 @@ import BaseForm from '@/components/BaseForm'
 
 interface StateType {
   loading: boolean
-  formRef: Ref<any>
   formItem: FormItemType[]
   rules: { [key: string]: any }
   handleInSubmit: (_data: any) => void
   handleSubmit: () => void
 }
 
+const formRef = ref<InstanceType<typeof BaseForm> | null>(null)
+
 const state = reactive<StateType>({
   loading: false,
-  formRef: ref<any>(null),
   formItem: [
     {
       label: '',
@@ -287,11 +287,13 @@ const state = reactive<StateType>({
   //自定按钮提交方法
   async handleSubmit() {
     state.loading = true
-    const { code, data } = await state.formRef.onSubmit()
-    console.log('🚀 ~ data:', code, data)
-    setTimeout(() => {
-      state.loading = false
-    }, 1000)
+    if (formRef.value) {
+      const { code, data } = await formRef.value.onSubmit()
+      console.log('🚀 ~ data:', code, data)
+      setTimeout(() => {
+        state.loading = false
+      }, 1000)
+    }
   }
 })
 </script>

@@ -64,9 +64,9 @@ module.exports = {
     'no-delete-var': 'off', // 允许出现delete变量的使用
     'no-shadow': 'off', // 允许变量声明与外层作用域的变量同名
     'dot-notation': 'warn', // 要求尽可能地使用点号
-    'default-case': 'warn', // 要求switch语句中有default分支
     eqeqeq: 'warn', // 要求使用 === 和 !==
-    curly: 'warn', // 要求所有控制语句使用一致的括号风格
+    curly: 'off', // 要求所有控制语句使用一致的括号风格
+    'brace-style': 'off', // 要求在代码块中使用一致的大括号风格
     'space-before-blocks': 'warn', // 要求在块之前使用一致的空格
     'space-in-parens': 'warn', // 要求在圆括号内使用一致的空格
     'space-infix-ops': 'warn', // 要求操作符周围有空格
@@ -74,8 +74,10 @@ module.exports = {
     'switch-colon-spacing': 'warn', // 要求在switch的冒号左右有空格
     'arrow-spacing': 'warn', // 要求箭头函数的箭头前后使用一致的空格
     'array-bracket-spacing': 'warn', // 要求数组方括号中使用一致的空格
-    'brace-style': 'warn', // 要求在代码块中使用一致的大括号风格
     camelcase: 'warn', // 要求使用骆驼拼写法命名约定
+    'no-fallthrough': 'warn', // 禁止switch语句的case语句落空
+    'default-case': 'warn', // 要求switch语句中有default分支
+    'default-case-last': 'warn', // 要求default分支在switch语句的最后
     indent: [
       'warn',
       2,

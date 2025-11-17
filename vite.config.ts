@@ -109,7 +109,7 @@ export default ({ mode }: { mode: any }) => {
       }
     },
     build: {
-      outDir: 'dist' + env.VITE_BASE,
+      outDir: 'dist' + env.VITE_BASE.replace(/\.\//, '/'),
       sourcemap: false,
       minify: 'terser',
       terserOptions: {
