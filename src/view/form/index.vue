@@ -34,7 +34,7 @@
   </BaseForm>
 </template>
 
-<script setup lang="ts" name="AboutIndex">
+<script setup lang="ts" name="FormIndex">
 import type { FormItemType } from '@/components/BaseForm'
 import BaseForm from '@/components/BaseForm'
 
@@ -249,7 +249,7 @@ const state = reactive<StateType>({
         placeholder: '请选择'
       },
       data: {
-        dict: '1'
+        dict: 'week'
       }
     },
     {
@@ -261,7 +261,7 @@ const state = reactive<StateType>({
         placeholder: '请选择'
       },
       data: {
-        dict: '11'
+        dict: 'hobby'
       },
       attr: { row: 3 }
     }

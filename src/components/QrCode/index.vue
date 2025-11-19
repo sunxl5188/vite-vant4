@@ -42,7 +42,7 @@ const onDecode = (data: any) => {
   try {
     console.log(data)
     // data 为扫码结果 对data做相关处理进行下一步操作
-  } catch (err) {
+  } catch {
     closeQrCode()
     console.log('扫码失败，请联系管理员')
   }

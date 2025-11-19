@@ -209,7 +209,7 @@ interface StateType {
   fieldNames: PickerFieldNames
   getBindValue: ComputedRef<Record<string, unknown>>
   formData: { [key: string]: any }
-  handleSubmit: () => void
+  handleSubmit: () => Promise<{ code: number; data: any }>
   fieldAttributes: (_item: any) => Record<string, unknown>
   fieldAttrComputed: ComputedRef<(_item: any) => any>
 }

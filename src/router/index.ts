@@ -24,7 +24,7 @@ const routes: Array<RouteRecordRaw> = [
 routes.push({
   path: '/:pathMatch(.*)*',
   name: 'NotFound',
-  component: () => import(/* webpackPrefetch: true */ '@/view/notfound.vue')
+  component: () => import(/* webpackPrefetch: true */ '@/view/Notfound.vue')
 })
 
 const router = createRouter({
@@ -33,9 +33,3 @@ const router = createRouter({
 })
 
 export default router
-// 404页面路由
-routes.push({
-  path: '/:pathMatch(.*)*',
-  name: 'NotFound',
-  component: () => import('@/view/notfound.vue')
-})

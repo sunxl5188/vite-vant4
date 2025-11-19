@@ -104,7 +104,8 @@ export default ({ mode }: { mode: any }) => {
           target: env.VITE_TARGET,
           changeOrigin: true,
           // 带选项写法：http://localhost:5173/api/bar -> http://jsonplaceholder.typicode.com/bar
-          rewrite: (path: any) => path.replace(RegExp(`^${env.VITE_API}`), '')
+          rewrite: (path: string) =>
+            path.replace(RegExp(`^${env.VITE_API}`), '')
         }
       }
     },

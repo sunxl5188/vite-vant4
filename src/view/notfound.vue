@@ -8,6 +8,6 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="Notfound">
 // 这里可以添加自定义逻辑
 </script>
