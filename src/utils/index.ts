@@ -1,5 +1,5 @@
 import ClipboardJS from 'clipboard'
-import { useAppStore } from '@/store/useAppStore'
+import { useUserStore } from '@/store/useUserStore'
 
 // 系统字典接口
 export const dictApi = '/home/index/getSystemDict'
@@ -47,8 +47,8 @@ export function getDictFilter(dictType: string, value: string): string {
   if (!dictType || !value) {
     return result
   }
-  const appStore = useAppStore()
-  const dictData = appStore.dictData[dictType] || []
+  const userStore = useUserStore()
+  const dictData = userStore.dictData[dictType] || []
   const dictItem = dictData.find((item: any) => item.value === value)
   if (dictItem) {
     result = dictItem.text || '--'

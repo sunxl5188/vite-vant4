@@ -20,7 +20,7 @@
 <script setup lang="ts" name="FieldPicker">
 import type { PickerColumn, PickerOption, PickerFieldNames } from 'vant'
 import { fetch } from '@/utils/request'
-import { useAppStore } from '@/store/useAppStore'
+import { useUserStore } from '@/store/useUserStore'
 
 const props = defineProps({
   modelValue: {
@@ -60,7 +60,7 @@ const props = defineProps({
   }
 })
 
-const appStore = useAppStore()
+const userStore = useUserStore()
 const emit = defineEmits(['update:modelValue', 'update:text'])
 
 const state = reactive({
@@ -134,7 +134,7 @@ const state = reactive({
 
 onMounted(() => {
   if (props.dict) {
-    state.sourceData = appStore.dictData[props.dict]
+    state.sourceData = userStore.dictData[props.dict]
   } else if (props.api) {
     state.handleLoad()
   } else {

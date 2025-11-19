@@ -17,7 +17,8 @@ export default defineConfig([
       globals: {
         ...globals.browser,
         ...globals.node,
-        ...eslintAuto.globals
+        ...eslintAuto.globals,
+        __APP_VERSION__: 'readonly'
       }
     }
   },

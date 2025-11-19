@@ -17,6 +17,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Stomp',
     component: () =>
       import(/* webpackPrefetch: true */ '@/view/stomp/index.vue')
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () =>
+      import(/* webpackPrefetch: true */ '@/view/login/index.vue')
   }
 ]
 
@@ -28,7 +34,7 @@ routes.push({
 })
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.VITE_BASE.replace(/\.\//, '/')),
+  history: createWebHistory(import.meta.env.VITE_BASE),
   routes
 })
 

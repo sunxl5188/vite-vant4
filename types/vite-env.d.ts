@@ -10,11 +10,12 @@ declare module 'vue3-qr-reader'
 declare module 'vite-plugin-vue-style-px-to-viewport'
 declare const window: any
 declare const SGMap: any
+declare const __APP_VERSION__: string
 
 declare module '*.vue' {
   import { App, defineComponent } from 'vue'
   const component: ReturnType<typeof defineComponent> & {
-    install(app: App): void
+    install(_app: App): void
   }
   export default component
 }

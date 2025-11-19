@@ -51,7 +51,7 @@
 
 <script setup lang="ts" name="FieldPickerTag">
 import { fetch } from '@/utils/request'
-import { useAppStore } from '@/store/useAppStore'
+import { useUserStore } from '@/store/useUserStore'
 
 interface PickerFieldNames {
   text?: string
@@ -92,7 +92,7 @@ const props = withDefaults(defineProps<PropsType>(), {
 })
 
 const emit = defineEmits(['update:modelValue', 'update:text'])
-const appStore = useAppStore()
+const userStore = useUserStore()
 const state = reactive({
   showPicker: false,
   fieldText: '',
@@ -156,7 +156,7 @@ const state = reactive({
 
 onMounted(() => {
   if (props.dict) {
-    state.sourceData = appStore.dictData[props.dict]
+    state.sourceData = userStore.dictData[props.dict]
   } else if (props.api) {
     state.handleLoad()
   } else {

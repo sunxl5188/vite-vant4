@@ -10,14 +10,18 @@ import { viteVConsole } from 'vite-plugin-vconsole'
 import { fileURLToPath, URL } from 'node:url'
 import vitePluginStyleToVw from 'vite-plugin-style-to-vw'
 import { createHtmlPlugin } from 'vite-plugin-html'
+import { version } from './package.json'
 
 // https://vite.dev/config/
 export default ({ mode }: { mode: any }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  console.log('🚀 ~ env:', env.VITE_BASE)
-
+  console.log('🚀 ~ env:', env)
+  console.log('当前版本', version)
   return defineConfig({
     base: env.VITE_BASE,
+    define: {
+      __APP_VERSION__: JSON.stringify(`-v${version}`)
+    },
     resolve: {
       alias: {
         // '@': resolve(__dirname, 'src')
@@ -47,10 +51,9 @@ export default ({ mode }: { mode: any }) => {
       }),
       vue(),
       tsconfigPaths({ loose: true }),
-      //todo-xl vconsole只在开发环境使用
       viteVConsole({
         entry: fileURLToPath(new URL('./src/main.ts', import.meta.url)),
-        enabled: env.NODE_ENV === 'development', // 可自行结合 mode 和 command 进行判断
+        enabled: env.NODE_ENV === 'staging', // 可自行结合 mode 和 command 进行判断
         config: {
           maxLogNumber: 1000,
           theme: 'dark'
@@ -110,7 +113,7 @@ export default ({ mode }: { mode: any }) => {
       }
     },
     build: {
-      outDir: 'dist' + env.VITE_BASE.replace(/\.\//, '/'),
+      outDir: 'dist' + env.VITE_BASE,
       sourcemap: false,
       minify: 'terser',
       terserOptions: {

@@ -214,13 +214,12 @@ interface StateType {
   fieldAttrComputed: ComputedRef<(_item: any) => any>
 }
 
-const slots = useSlots()
-const emit = defineEmits(['submit'])
-
 const props = withDefaults(defineProps<PropsType>(), {
   formItem: () => [],
   rules: () => ({})
 })
+
+const emit = defineEmits(['submit'])
 
 const state = reactive<StateType>({
   loading: false,
@@ -240,18 +239,13 @@ const state = reactive<StateType>({
       state.formRef
         ?.validate()
         .then(() => {
-          if (!slots.button) {
-            emit('submit', state.formData)
-          } else {
-            resolve({ code: 200, data: state.formData })
-          }
+          resolve({ code: 200, data: state.formData })
+          emit('submit', state.formData)
           state.loading = false
         })
         .catch((err: any) => {
           state.loading = false
-          if (slots.button) {
-            resolve({ code: 0, data: null })
-          }
+          resolve({ code: 0, data: null })
           console.log('🚀 ~ err:', err)
         })
     })

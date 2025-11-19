@@ -15,7 +15,8 @@ import { useAppStore } from '@/store/useAppStore'
 import { getDictFilter } from '@/utils'
 
 const appStore = useAppStore()
-appStore.setDictData()
+
+console.log(appStore.theme)
 const state = shallowRef({
   name: 'home index',
   age: 100,

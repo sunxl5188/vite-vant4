@@ -11,6 +11,8 @@ declare module 'axios' {
   }
 }
 
+export type PromiseResult = AxiosResponse | PromiseLike<AxiosResponse>
+
 import axios from 'axios'
 import type {
   AxiosRequestConfig,
@@ -163,10 +165,12 @@ instance.interceptors.request.use(
 				cancel: c
 			})
 		}) */
-    const token = localStorage.getItem('token') ?? ''
-    if (token && config.headers) {
-      config.headers.Authorization = token
-      config.headers.Token = token
+    const { userInfo } = JSON.parse(
+      localStorage.getItem('userStore' + __APP_VERSION__) || '{}'
+    )
+    if (userInfo?.token && config.headers) {
+      config.headers.Authorization = userInfo.token
+      config.headers.Token = userInfo.token
     }
     return config
   },
