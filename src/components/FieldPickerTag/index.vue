@@ -167,7 +167,7 @@ onMounted(() => {
 watch(
   () => [props.modelValue, state.sourceData],
   () => {
-    if (props.modelValue?.length) {
+    if (props.modelValue?.length && state.sourceData?.length) {
       state.pickerValue = JSON.parse(JSON.stringify(props.modelValue))
       state.handleQueryText()
     }

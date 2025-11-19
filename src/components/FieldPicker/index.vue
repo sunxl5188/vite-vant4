@@ -145,15 +145,13 @@ onMounted(() => {
 watch(
   () => [props.modelValue, state.sourceData],
   () => {
-    if (props.modelValue) {
+    if (props.modelValue && state.sourceData?.length) {
       const value = props.modelValue.split(',')
       state.pickerValue = value
-      if (state.sourceData.length) {
-        state.handleQueryText()
-      }
+      state.handleQueryText()
     }
   },
-  { immediate: true }
+  { immediate: true, deep: true }
 )
 
 const { showPicker, fieldText, pickerValue, handleShowPopup, onConfirm } =
