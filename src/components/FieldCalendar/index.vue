@@ -34,14 +34,15 @@ const props = defineProps({
   }
 })
 const emit = defineEmits(['update:modelValue'])
-
+const typeStyle = inject('typeStyle', 'line')
 const state = reactive({
   fieldText: '',
   fieldValue: '',
   visible: false,
   getFieldValue: computed(() => {
     return {
-      'is-link': true,
+      'is-link': typeStyle === 'line',
+      rightIcon: typeStyle === 'line' ? 'arrow-right' : 'arrow-down',
       readonly: true,
       placeholder: '请选择日期',
       rules: [],

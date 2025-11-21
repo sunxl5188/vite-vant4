@@ -52,7 +52,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:modelValue', 'update:text'])
-
+const typeStyle = inject('typeStyle', 'line')
 const state = reactive({
   showPicker: false,
   fieldText: '',
@@ -60,7 +60,8 @@ const state = reactive({
   endDate: [] as string[],
   getFieldValue: computed(() => {
     return {
-      'is-link': true,
+      'is-link': typeStyle === 'line',
+      rightIcon: typeStyle === 'line' ? 'arrow-right' : 'arrow-down',
       readonly: true,
       rules: [],
       ...props.fieldAttr

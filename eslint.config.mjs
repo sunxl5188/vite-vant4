@@ -34,7 +34,7 @@ export default defineConfig([
       'no-debugger': 'warn', // 禁止出现debugger
       'no-duplicate-case': 'warn', // 禁止出现重复case
       'no-empty': 'warn', // 禁止出现空语句块
-      'no-extra-parens': 'warn', // 禁止不必要的括号
+      'no-extra-parens': ['error', 'all', { nestedBinaryExpressions: false }], // 禁止不必要的括号
       'no-func-assign': 'warn', // 禁止对Function声明重新赋值
       'no-unreachable': 'warn', // 禁止出现[return|throw]之后的代码块
       'no-else-return': 'warn', // 禁止if语句中return语句之后有else块
@@ -98,6 +98,7 @@ export default defineConfig([
         }
       ],
       '@typescript-eslint/no-explicit-any': 'off', // 允许使用any类型
+      '@typescript-eslint/ban-ts-comment': 'off',
       // 要求html标签的缩进为需要4个空格
       'vue/html-indent': [
         'warn',

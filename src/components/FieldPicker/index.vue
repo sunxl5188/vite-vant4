@@ -63,6 +63,8 @@ const props = defineProps({
 const userStore = useUserStore()
 const emit = defineEmits(['update:modelValue', 'update:text'])
 
+const typeStyle = inject('typeStyle', 'line')
+
 const state = reactive({
   showPicker: false,
   fieldText: '',
@@ -70,7 +72,8 @@ const state = reactive({
   sourceData: [] as PickerColumn,
   getFieldValue: computed(() => {
     return {
-      'is-link': true,
+      'is-link': typeStyle === 'line',
+      rightIcon: typeStyle === 'line' ? 'arrow-right' : 'arrow-down',
       readonly: true,
       placeholder: '请选择',
       rules: [],

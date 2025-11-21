@@ -1,155 +1,167 @@
 <template>
-  <van-form :ref="el => (state.formRef = el)" v-bind="state.getBindValue">
-    <template v-for="item in props.formItem" :key="item.prop">
-      <van-field
-        v-if="!item.fieldType"
-        v-model="formData[item.prop]"
-        :label="item.label"
-        required="auto"
-        :rules="rules[item.prop]"
-        v-bind="item.fieldAttr || {}"
-      />
-      <template v-else-if="item.fieldType === 'slot'">
-        <slot :name="item.slotName" :form-data="formData"></slot>
+  <van-cell-group :inset="typeStyle !== 'line'">
+    <van-form
+      :ref="el => (state.formRef = el)"
+      v-bind="state.getBindValue"
+      :class="typeStyle"
+    >
+      <template v-for="item in props.formItem" :key="item.prop">
+        <van-field
+          v-if="!item.fieldType"
+          v-model="formData[item.prop]"
+          :label="item.label"
+          required="auto"
+          :rules="rules[item.prop]"
+          v-bind="state.fieldAttrComputed(item)"
+        />
+        <template v-else-if="item.fieldType === 'slot'">
+          <slot :name="item.slotName" :form-data="formData"></slot>
+        </template>
+        <field-calender
+          v-else-if="item.fieldType === 'calendar'"
+          v-model="formData[item.prop]"
+          :label="item.label"
+          :field-attr="state.fieldAttrComputed(item)"
+          :attr="item.attr || {}"
+        />
+        <field-cascader
+          v-else-if="item.fieldType === 'area'"
+          v-model="formData[item.prop]"
+          :label="item.label"
+          :field-attr="state.fieldAttrComputed(item)"
+          :attr="item.attr || {}"
+        />
+        <field-checkbox
+          v-else-if="item.fieldType === 'checkbox'"
+          v-model="formData[item.prop]"
+          :label="item.label"
+          :field-attr="state.fieldAttrComputed(item)"
+          :attr="item.attr || {}"
+          :options="item.data?.options || []"
+          :dict="item.data?.dict || ''"
+          :api="item.data?.api || ''"
+          :params="item.data?.params || {}"
+          :field-names="
+            item.data?.fieldNames || { text: 'text', value: 'value' }
+          "
+        />
+        <FieldCheckboxButton
+          v-else-if="item.fieldType === 'checkboxButton'"
+          v-model="formData[item.prop]"
+          :label="item.label"
+          :field-attr="state.fieldAttrComputed(item)"
+          :options="item.data?.options || []"
+          :dict="item.data?.dict || ''"
+          :api="item.data?.api || ''"
+          :params="item.data?.params || {}"
+          :field-names="
+            item.data?.fieldNames || { text: 'text', value: 'value' }
+          "
+        />
+        <FieldRadio
+          v-else-if="item.fieldType === 'radio'"
+          v-model="formData[item.prop]"
+          :label="item.label"
+          :field-attr="state.fieldAttrComputed(item)"
+          :options="item.data?.options || []"
+          :dict="item.data?.dict || ''"
+          :api="item.data?.api || ''"
+          :params="item.data?.params || {}"
+          :field-names="
+            item.data?.fieldNames || { text: 'text', value: 'value' }
+          "
+        />
+        <FieldSwitch
+          v-else-if="item.fieldType === 'switch'"
+          v-model="formData[item.prop]"
+          :label="item.label"
+          :field-attr="state.fieldAttrComputed(item)"
+          :attr="item.attr || {}"
+        />
+        <FieldDateGroup
+          v-else-if="item.fieldType === 'dateRange'"
+          v-model="formData[item.prop]"
+          :label="item.label"
+          :field-attr="state.fieldAttrComputed(item)"
+          :attr="item.attr || {}"
+          :start-attr="item.attr?.startAttr || {}"
+          :end-attr="item.attr?.endAttr || {}"
+        />
+        <FieldDateTimeGroup
+          v-else-if="item.fieldType === 'dateTime'"
+          v-model="formData[item.prop]"
+          :label="item.label"
+          :field-attr="state.fieldAttrComputed(item)"
+          :attr="item.attr || {}"
+        />
+        <FieldDate
+          v-else-if="item.fieldType === 'date'"
+          v-model="formData[item.prop]"
+          :label="item.label"
+          :field-attr="state.fieldAttrComputed(item)"
+          :attr="item.attr || {}"
+        />
+        <FieldTime
+          v-else-if="item.fieldType === 'time'"
+          v-model="formData[item.prop]"
+          :label="item.label"
+          :field-attr="state.fieldAttrComputed(item)"
+          :attr="item.attr || {}"
+        />
+        <FieldTimeGroup
+          v-else-if="item.fieldType === 'timeRange'"
+          v-model="formData[item.prop]"
+          :label="item.label"
+          :field-attr="state.fieldAttrComputed(item)"
+          :attr="item.attr || {}"
+        />
+        <FieldUpload
+          v-else-if="item.fieldType === 'upload'"
+          v-model="formData[item.prop]"
+          :label="item.label"
+          :field-attr="state.fieldAttrComputed(item)"
+          :attr="item.attr || {}"
+        />
+        <FieldPicker
+          v-else-if="item.fieldType === 'picker'"
+          v-model="formData[item.prop]"
+          :label="item.label"
+          :field-attr="state.fieldAttrComputed(item)"
+          :attr="item.attr || {}"
+          :columns="item.data?.options || []"
+          :dict="item.data?.dict || ''"
+          :api="item.data?.api || ''"
+          :params="item.data?.params || {}"
+          :field-names="item.data?.fieldNames || state.fieldNames"
+        />
+        <FieldPickerTag
+          v-else-if="item.fieldType === 'pickerTag'"
+          v-model="formData[item.prop]"
+          :label="item.label"
+          :field-attr="state.fieldAttrComputed(item)"
+          :attr="item.attr || {}"
+          :columns="item.data?.options || []"
+          :dict="item.data?.dict || ''"
+          :api="item.data?.api || ''"
+          :params="item.data?.params || {}"
+          :field-names="item.data?.fieldNames || state.fieldNames"
+        />
       </template>
-      <field-calender
-        v-else-if="item.fieldType === 'calendar'"
-        v-model="formData[item.prop]"
-        :label="item.label"
-        :field-attr="state.fieldAttrComputed(item)"
-        :attr="item.attr || {}"
-      />
-      <field-cascader
-        v-else-if="item.fieldType === 'area'"
-        v-model="formData[item.prop]"
-        :label="item.label"
-        :field-attr="state.fieldAttrComputed(item)"
-        :attr="item.attr || {}"
-      />
-      <field-checkbox
-        v-else-if="item.fieldType === 'checkbox'"
-        v-model="formData[item.prop]"
-        :label="item.label"
-        :field-attr="state.fieldAttrComputed(item)"
-        :attr="item.attr || {}"
-        :options="item.data?.options || []"
-        :dict="item.data?.dict || ''"
-        :api="item.data?.api || ''"
-        :params="item.data?.params || {}"
-        :field-names="item.data?.fieldNames || { text: 'text', value: 'value' }"
-      />
-      <FieldCheckboxButton
-        v-else-if="item.fieldType === 'checkboxButton'"
-        v-model="formData[item.prop]"
-        :label="item.label"
-        :field-attr="state.fieldAttrComputed(item)"
-        :options="item.data?.options || []"
-        :dict="item.data?.dict || ''"
-        :api="item.data?.api || ''"
-        :params="item.data?.params || {}"
-        :field-names="item.data?.fieldNames || { text: 'text', value: 'value' }"
-      />
-      <FieldRadio
-        v-else-if="item.fieldType === 'radio'"
-        v-model="formData[item.prop]"
-        :label="item.label"
-        :field-attr="state.fieldAttrComputed(item)"
-        :options="item.data?.options || []"
-        :dict="item.data?.dict || ''"
-        :api="item.data?.api || ''"
-        :params="item.data?.params || {}"
-        :field-names="item.data?.fieldNames || { text: 'text', value: 'value' }"
-      />
-      <FieldSwitch
-        v-else-if="item.fieldType === 'switch'"
-        v-model="formData[item.prop]"
-        :label="item.label"
-        :field-attr="state.fieldAttrComputed(item)"
-        :attr="item.attr || {}"
-      />
-      <FieldDateGroup
-        v-else-if="item.fieldType === 'dateRange'"
-        v-model="formData[item.prop]"
-        :label="item.label"
-        :field-attr="state.fieldAttrComputed(item)"
-        :attr="item.attr || {}"
-        :start-attr="item.attr?.startAttr || {}"
-        :end-attr="item.attr?.endAttr || {}"
-      />
-      <FieldDateTimeGroup
-        v-else-if="item.fieldType === 'dateTime'"
-        v-model="formData[item.prop]"
-        :label="item.label"
-        :field-attr="state.fieldAttrComputed(item)"
-        :attr="item.attr || {}"
-      />
-      <FieldDate
-        v-else-if="item.fieldType === 'date'"
-        v-model="formData[item.prop]"
-        :label="item.label"
-        :field-attr="state.fieldAttrComputed(item)"
-        :attr="item.attr || {}"
-      />
-      <FieldTime
-        v-else-if="item.fieldType === 'time'"
-        v-model="formData[item.prop]"
-        :label="item.label"
-        :field-attr="state.fieldAttrComputed(item)"
-        :attr="item.attr || {}"
-      />
-      <FieldTimeGroup
-        v-else-if="item.fieldType === 'timeRange'"
-        v-model="formData[item.prop]"
-        :label="item.label"
-        :field-attr="state.fieldAttrComputed(item)"
-        :attr="item.attr || {}"
-      />
-      <FieldUpload
-        v-else-if="item.fieldType === 'upload'"
-        v-model="formData[item.prop]"
-        :label="item.label"
-        :field-attr="state.fieldAttrComputed(item)"
-        :attr="item.attr || {}"
-      />
-      <FieldPicker
-        v-else-if="item.fieldType === 'picker'"
-        v-model="formData[item.prop]"
-        :label="item.label"
-        :field-attr="state.fieldAttrComputed(item)"
-        :attr="item.attr || {}"
-        :columns="item.data?.options || []"
-        :dict="item.data?.dict || ''"
-        :api="item.data?.api || ''"
-        :params="item.data?.params || {}"
-        :field-names="item.data?.fieldNames || state.fieldNames"
-      />
-      <FieldPickerTag
-        v-else-if="item.fieldType === 'pickerTag'"
-        v-model="formData[item.prop]"
-        :label="item.label"
-        :field-attr="state.fieldAttrComputed(item)"
-        :attr="item.attr || {}"
-        :columns="item.data?.options || []"
-        :dict="item.data?.dict || ''"
-        :api="item.data?.api || ''"
-        :params="item.data?.params || {}"
-        :field-names="item.data?.fieldNames || state.fieldNames"
-      />
-    </template>
-    <div class="p-4">
-      <slot name="button">
-        <van-button
-          :loading="state.loading"
-          round
-          block
-          type="primary"
-          @click="handleSubmit"
-        >
-          提交
-        </van-button>
-      </slot>
-    </div>
-  </van-form>
+      <div class="py-4">
+        <slot name="button">
+          <van-button
+            :loading="state.loading"
+            round
+            block
+            type="primary"
+            @click="handleSubmit"
+          >
+            提交
+          </van-button>
+        </slot>
+      </div>
+    </van-form>
+  </van-cell-group>
 </template>
 
 <script setup lang="ts" name="BaseForm">
@@ -201,6 +213,7 @@ const FieldPickerTag = defineAsyncComponent(
 interface PropsType {
   formItem?: FormItemType[]
   rules?: { [key: string]: any }
+  typeStyle?: 'line' | 'input' | 'input-inline'
 }
 
 interface StateType {
@@ -210,16 +223,18 @@ interface StateType {
   getBindValue: ComputedRef<Record<string, unknown>>
   formData: { [key: string]: any }
   handleSubmit: () => Promise<{ code: number; data: any }>
-  fieldAttributes: (_item: any) => Record<string, unknown>
   fieldAttrComputed: ComputedRef<(_item: any) => any>
 }
 
 const props = withDefaults(defineProps<PropsType>(), {
   formItem: () => [],
-  rules: () => ({})
+  rules: () => ({}),
+  typeStyle: 'line'
 })
 
 const emit = defineEmits(['submit'])
+
+provide('typeStyle', props.typeStyle)
 
 const state = reactive<StateType>({
   loading: false,
@@ -250,16 +265,18 @@ const state = reactive<StateType>({
         })
     })
   },
-  fieldAttributes: item => {
-    return {
-      label: item.label,
-      placeholder: item.placeholder,
-      border: item.border === undefined,
-      rules: props.rules[item.prop] || []
-    }
-  },
   fieldAttrComputed: computed(() => (item: any) => {
-    const obj = item.fieldAttr || {}
+    let fieldAttr = {}
+    if (props.typeStyle === 'line') {
+      fieldAttr = { inputAlign: 'right', border: true }
+    }
+    if (props.typeStyle === 'input-inline') {
+      fieldAttr = {
+        inputAlign: 'left',
+        border: false
+      }
+    }
+    const obj = { ...item?.fieldAttr, ...fieldAttr }
     const rules = { rules: props.rules[item.prop] || [] }
     return { ...obj, ...rules }
   })
@@ -283,3 +300,16 @@ defineExpose({
   onSubmit: state.handleSubmit
 })
 </script>
+<style scoped lang="scss">
+.van-form {
+  &.input-inline {
+    :deep(.van-cell) {
+      &.van-field {
+        border: 1px solid var(--van-border-color);
+        margin-bottom: 12px;
+        border-radius: 8px;
+      }
+    }
+  }
+}
+</style>

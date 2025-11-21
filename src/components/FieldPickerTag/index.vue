@@ -45,7 +45,7 @@
         {{ item[fieldNames.text || 'text'] }}
       </span>
     </div>
-    <van-empty v-if="!state.sourceData.length" description="暂无数据" />
+    <van-empty v-if="!state.sourceData?.length" description="暂无数据" />
   </van-popup>
 </template>
 
@@ -93,15 +93,17 @@ const props = withDefaults(defineProps<PropsType>(), {
 
 const emit = defineEmits(['update:modelValue', 'update:text'])
 const userStore = useUserStore()
+const typeStyle = inject('typeStyle', 'line')
 const state = reactive({
   showPicker: false,
   fieldText: '',
   pickerValue: [] as string[],
   sourceData: [] as any[],
-  row: props.attr?.row || 4,
+  row: props.attr?.row || 3,
   getFieldValue: computed(() => {
     return {
-      'is-link': true,
+      'is-link': typeStyle === 'line',
+      rightIcon: typeStyle === 'line' ? 'arrow-right' : 'arrow-down',
       readonly: true,
       placeholder: '请选择',
       rules: [],
