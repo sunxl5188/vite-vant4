@@ -1,5 +1,10 @@
 <template>
-  <BaseForm ref="formRef" :form-item="state.formItem" :rules="state.rules">
+  <BaseForm
+    ref="formRef"
+    :form-item="state.formItem"
+    :rules="state.rules"
+    type="input-left"
+  >
     <template #title1>
       <div
         class="text-base font-bold px-4 py-2 bg-gray-100 border-b border-gray-200 mb-3"
@@ -29,7 +34,7 @@
   </BaseForm>
 </template>
 
-<script setup lang="ts" name="BaseForm">
+<script setup lang="ts" name="FormInput">
 import type { FormItemType } from '@/components/BaseForm'
 import BaseForm from '@/components/BaseForm'
 
@@ -292,3 +297,5 @@ const state = reactive<StateType>({
   }
 })
 </script>
+
+<style scoped lang="scss"></style>

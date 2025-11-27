@@ -3,7 +3,7 @@
     v-model="fieldText"
     :label="label"
     required="auto"
-    v-bind="state.getFieldValue"
+    v-bind="getFieldValue(type, fieldAttr)"
     @click="handleShowPopup"
   />
   <van-popup v-model:show="showPicker" destroy-on-close round position="bottom">
@@ -17,6 +17,7 @@
 </template>
 
 <script setup lang="ts" name="FieldTime">
+import { getFieldValue } from '@/components/BaseForm/common'
 import dayjs from 'dayjs'
 
 const props = defineProps({
@@ -38,21 +39,11 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:modelValue', 'update:text'])
-const typeStyle = inject('typeStyle', 'line')
+const type = inject('type', 'line')
 const state = reactive({
   showPicker: false,
   fieldText: '',
   time: [] as Array<string>,
-  getFieldValue: computed(() => {
-    return {
-      'is-link': typeStyle === 'line',
-      rightIcon: typeStyle === 'line' ? 'arrow-right' : 'arrow-down',
-      readonly: true,
-      placeholder: '请选择时间',
-      rules: [],
-      ...props.fieldAttr
-    }
-  }),
   getBindValue: computed(() => {
     return {
       title: '请选择时间',

@@ -3,9 +3,10 @@ import zhCn from './locale/zh-cn.json'
 import enUs from './locale/en-us.json'
 
 type MessageSchema = typeof zhCn
-
+const appStore = localStorage.getItem(`appStore${__APP_VERSION__}`) || '{}'
+const { language } = JSON.parse(appStore)
 const i18n = createI18n<[MessageSchema], 'en-US' | 'zh-CN'>({
-  locale: 'zh-CN', //默认中文
+  locale: language || 'zh-CN', // 设置默认语言
   globalInjection: true, // 如果设置true, $t() 函数将注册到全局，实际测试不加好像也能直接使用$t获取到值
   legacy: false,
   messages: {
@@ -99,4 +100,5 @@ const i18n = createI18n<[MessageSchema], 'en-US' | 'zh-CN'>({
     }
   }
 })
+
 export default i18n

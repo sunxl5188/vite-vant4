@@ -3,7 +3,7 @@
     v-model="fieldText"
     :label="label"
     required="auto"
-    v-bind="state.getFieldValue"
+    v-bind="getFieldValue(type, fieldAttr)"
     @click="handleShowPopup"
   />
   <van-popup v-model:show="showPicker" destroy-on-close round position="bottom">
@@ -20,6 +20,7 @@
 
 <script setup lang="ts" name="FieldDateGroup">
 import dayjs from 'dayjs'
+import { getFieldValue } from '@/components/BaseForm/common'
 
 const props = defineProps({
   modelValue: {
@@ -52,21 +53,12 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:modelValue', 'update:text'])
-const typeStyle = inject('typeStyle', 'line')
+const type = inject('type', 'line')
 const state = reactive({
   showPicker: false,
   fieldText: '',
   startDate: [] as string[],
   endDate: [] as string[],
-  getFieldValue: computed(() => {
-    return {
-      'is-link': typeStyle === 'line',
-      rightIcon: typeStyle === 'line' ? 'arrow-right' : 'arrow-down',
-      readonly: true,
-      rules: [],
-      ...props.fieldAttr
-    }
-  }),
   getBindValue: computed(() => {
     return {
       title: '预约日期',

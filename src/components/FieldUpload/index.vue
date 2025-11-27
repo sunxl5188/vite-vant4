@@ -1,14 +1,20 @@
 <template>
-  <van-field :label="label" required="auto" v-bind="state.getFieldValue">
-    <template #input></template>
+  <van-field
+    :label="label"
+    required="auto"
+    v-bind="state.getFieldValue"
+    :class="[{ noBorder: type !== 'line' }]"
+  >
+    <template #input>
+      <div class="pt-[10px]">
+        <Uploader
+          v-model="state.fileList"
+          :accept="attr.accept || '.jpg,.jpeg,.png,.gif'"
+          :file-size="attr.fileSize || 1"
+        />
+      </div>
+    </template>
   </van-field>
-  <div class="pt-2 px-4">
-    <Uploader
-      v-model="state.fileList"
-      :accept="attr.accept || '.jpg,.jpeg,.png,.gif'"
-      :file-size="attr.fileSize || 1"
-    />
-  </div>
 </template>
 
 <script setup lang="ts" name="FieldUpload">
@@ -40,7 +46,7 @@ interface StateType {
 }
 
 const emit = defineEmits(['update:modelValue'])
-
+const type = inject('type', 'line')
 const state = reactive<StateType>({
   fileList: computed({
     get() {

@@ -13,6 +13,11 @@ declare const window: any
 declare const SGMap: any
 declare const __APP_VERSION__: string
 
+declare module 'virtual:svg-icons-register' {
+  const component: any
+  export default component
+}
+
 declare module '*.vue' {
   import { App, defineComponent } from 'vue'
   const component: ReturnType<typeof defineComponent> & {

@@ -7,6 +7,7 @@ import Components from 'unplugin-vue-components/vite'
 import { VantResolver } from '@vant/auto-import-resolver'
 import VueSetupExtend from 'vite-plugin-vue-setup-extend'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import { viteVConsole } from 'vite-plugin-vconsole'
 import { fileURLToPath, URL } from 'node:url'
 import vitePluginStyleToVw from 'vite-plugin-style-to-vw'
@@ -96,6 +97,14 @@ export default ({ mode }: { mode: any }) => {
             title: env.VITE_APP_TITLE
           }
         }
+      }),
+      createSvgIconsPlugin({
+        // 指定路径在你的src里的svg存放文件
+        iconDirs: [
+          fileURLToPath(new URL('./src/assets/icons', import.meta.url))
+        ],
+        // 指定symbolId格式
+        symbolId: '[name]'
       })
     ],
     server: {

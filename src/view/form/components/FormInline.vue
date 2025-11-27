@@ -3,22 +3,8 @@
     ref="formRef"
     :form-item="state.formItem"
     :rules="state.rules"
-    @submit="state.handleInSubmit"
+    type="input-inline"
   >
-    <template #title1>
-      <div
-        class="text-base font-bold px-4 py-2 bg-gray-100 border-b border-gray-200 mb-3"
-      >
-        用户信息表单
-      </div>
-    </template>
-    <template #title2>
-      <div
-        class="text-base font-bold px-4 py-2 bg-gray-100 border-b border-gray-200 mb-3"
-      >
-        基本信息
-      </div>
-    </template>
     <template #button>
       <van-button
         type="primary"
@@ -267,7 +253,7 @@ const state = reactive<StateType>({
     }
   ],
   rules: {
-    username: [{ required: true, message: '用户名不能为空', trigger: 'blur' }]
+    username: [{ required: true, message: '用户名不能为空', trigger: 'onBlur' }]
     /* password: [{ required: true, message: '密码不能为空', trigger: 'blur' }],
     dateBirth: [
       { required: true, message: '出生日期不能为空', trigger: 'blur' }

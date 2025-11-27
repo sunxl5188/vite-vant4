@@ -13,6 +13,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackPrefetch: true */ '@/view/form/index.vue')
   },
   {
+    path: '/list',
+    name: 'List',
+    component: () => import(/* webpackPrefetch: true */ '@/view/list/index.vue')
+  },
+  {
     path: '/stomp',
     name: 'Stomp',
     component: () =>
@@ -23,6 +28,18 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Login',
     component: () =>
       import(/* webpackPrefetch: true */ '@/view/login/index.vue')
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: () =>
+      import(/* webpackPrefetch: true */ '@/view/login/register.vue')
+  },
+  {
+    path: '/protocol/:id?',
+    name: 'Protocol',
+    component: () =>
+      import(/* webpackPrefetch: true */ '@/view/protocol/index.vue')
   }
 ]
 

@@ -1,25 +1,94 @@
 <template>
-  <van-field v-model="state.value" label="验证码" placeholder="请输入验证码">
+  <van-field
+    v-model="state.value"
+    :label="label"
+    required="auto"
+    v-bind="state.getFieldValue"
+  >
     <template #button>
-      <van-button size="small" @click="state.handleStart">
+      <template v-if="type === 'input-round'">
+        <a
+          href="javascript:;"
+          class="text-gray-600 text-sm"
+          @click="state.handleClick"
+        >
+          {{ state.tips }}
+        </a>
+      </template>
+      <van-button v-else type="primary" size="small" @click="state.handleClick">
         {{ state.tips }}
       </van-button>
     </template>
   </van-field>
+  <v-code
+    :show="state.visible"
+    :imgs="imgs"
+    @success="state.onSuccess"
+    @close="state.onClose"
+  />
 </template>
 
 <script setup lang="ts" name="FieldCode">
-const props = defineProps({
-  seconds: { type: Number, default: 60 }
-})
+import VCode from 'vue3-puzzle-vcode'
+import codeImg from '@/assets/images/code-bg.jpeg'
 
+const imgs = ref<string[]>([codeImg])
+
+const props = defineProps({
+  label: {
+    type: String,
+    default: ''
+  },
+  // 绑定值
+  modelValue: {
+    type: String,
+    default: ''
+  },
+  //输入框属性
+  fieldAttr: {
+    type: Object as PropType<Record<string, unknown>>,
+    default: () => ({})
+  },
+  // 组件属性
+  attr: {
+    type: Object as PropType<Record<string, unknown>>,
+    default: () => ({})
+  },
+  seconds: { type: Number, default: 60 },
+  isFinite: { type: Boolean, default: true }
+})
+const type = inject<string>('type', 'line')
+
+const emit = defineEmits(['update:modelValue'])
 const state = reactive({
   value: '',
+  visible: false,
   tips: '获取验证码',
   endText: '重新获取',
   changeText: 'X秒重新获取',
   leftSeconds: ref(JSON.parse(JSON.stringify(props.seconds))),
   timer: null as any,
+  getFieldValue: computed(() => {
+    return {
+      border: true,
+      rules: [],
+      ...props.fieldAttr
+    }
+  }),
+  onSuccess(code: any) {
+    console.log('验证成功回调', code)
+    state.visible = false
+    state.handleStart()
+  },
+  onClose() {
+    console.log('关闭回调')
+    state.visible = false
+  },
+  handleClick() {
+    if (props.isFinite) {
+      state.visible = true
+    } else state.handleStart()
+  },
   handleStart() {
     if (state.timer) return // 防止重复点击
     //console.log('开始倒计时', state.leftSeconds)
@@ -67,6 +136,13 @@ onMounted(() => {
 onUnmounted(() => {
   if (state.timer) clearInterval(state.timer)
 })
+
+watch(
+  () => state.value,
+  val => {
+    emit('update:modelValue', val)
+  }
+)
 
 // 页面离开时记录时间
 window.addEventListener('beforeunload', () => {
