@@ -15,24 +15,6 @@ export const getFieldValue = (type: string, attr: any) => {
       'is-link': false,
       'right-icon': 'arrow-down'
     }
-  } else if (type === 'input-top') {
-    bindAttr = {
-      inputAlign: 'left',
-      border: false,
-      'is-link': false,
-      'right-icon': 'arrow-down',
-      placeholder: '请选择',
-      rules: []
-    }
-  } else if (type === 'input-left') {
-    bindAttr = {
-      inputAlign: 'left',
-      border: false,
-      'is-link': false,
-      'right-icon': 'arrow-down',
-      placeholder: '请选择',
-      rules: []
-    }
   }
   return { ...bindAttr, ...attr }
 }

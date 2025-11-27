@@ -210,7 +210,7 @@ const FieldCode = defineAsyncComponent(
 interface PropsType {
   formItem?: FormItemType[]
   rules?: { [key: string]: any }
-  type?: 'line' | 'input-top' | 'input-left' | 'input-inline' | 'input-round'
+  type?: 'line' | 'input-inline' | 'input-round'
 }
 
 interface StateType {
@@ -253,21 +253,6 @@ const state = reactive<StateType>({
         'input-align': 'left',
         'scroll-to-error': true
       }
-    } else if (props.type === 'input-top') {
-      baseBind = {
-        'error-message-align': 'left',
-        'input-align': 'left',
-        'scroll-to-error': true,
-        'label-align': 'top'
-      }
-    } else if (props.type === 'input-left') {
-      baseBind = {
-        'error-message-align': 'left',
-        'input-align': 'left',
-        'scroll-to-error': true,
-        'label-align': 'left',
-        border: false
-      }
     } else if (props.type === 'input-round') {
       baseBind = {
         'error-message-align': 'left',
@@ -300,17 +285,6 @@ const state = reactive<StateType>({
       fieldAttr = {
         autocomplete: 'off',
         inputAlign: 'left'
-      }
-    } else if (props.type === 'input-top') {
-      fieldAttr = {
-        autocomplete: 'off',
-        inputAlign: 'left'
-      }
-    } else if (props.type === 'input-left') {
-      fieldAttr = {
-        autocomplete: 'off',
-        inputAlign: 'left',
-        border: false
       }
     } else if (props.type === 'input-round') {
       fieldAttr = {
@@ -351,42 +325,6 @@ defineExpose({
         border: 1px solid var(--van-border-color);
         margin-bottom: 12px;
         border-radius: 8px;
-      }
-    }
-  }
-  &.input-top {
-    :deep(.van-cell) {
-      .van-field__body {
-        border: 1px solid var(--van-border-color);
-        margin-bottom: 12px;
-        border-radius: 8px;
-        padding: calc(var(--van-cell-vertical-padding) - 1px)
-          var(--van-cell-horizontal-padding);
-      }
-      &.noBorder {
-        .van-field__body {
-          border: none;
-          border-radius: 0;
-          padding: 0;
-        }
-      }
-    }
-  }
-  &.input-left {
-    :deep(.van-cell) {
-      .van-field__body {
-        border: 1px solid var(--van-border-color);
-        margin-bottom: 12px;
-        border-radius: 8px;
-        padding: calc(var(--van-cell-vertical-padding) - 1px)
-          var(--van-cell-horizontal-padding);
-      }
-      &.noBorder {
-        .van-field__body {
-          border: none;
-          border-radius: 0;
-          padding: 0;
-        }
       }
     }
   }

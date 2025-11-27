@@ -3,7 +3,7 @@
     ref="formRef"
     :form-item="state.formItem"
     :rules="state.rules"
-    type="input-top"
+    type="input-round"
   >
     <template #title1>
       <div
