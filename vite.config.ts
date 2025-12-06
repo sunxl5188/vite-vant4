@@ -12,6 +12,8 @@ import { viteVConsole } from 'vite-plugin-vconsole'
 import { fileURLToPath, URL } from 'node:url'
 import vitePluginStyleToVw from 'vite-plugin-style-to-vw'
 import { createHtmlPlugin } from 'vite-plugin-html'
+import prefetchChunk from 'vite-plugin-prefetch-chunk'
+import viteCompression from 'vite-plugin-compression'
 import { version } from './package.json'
 
 // https://vite.dev/config/
@@ -105,6 +107,17 @@ export default ({ mode }: { mode: any }) => {
         ],
         // 指定symbolId格式
         symbolId: '[name]'
+      }),
+      viteCompression({
+        verbose: true,
+        disable: false,
+        threshold: 1024,
+        algorithm: 'gzip',
+        deleteOriginFile: true
+      }),
+      // 预加载和预取静态资源
+      prefetchChunk({
+        prefetchLegacyChunks: true
       })
     ],
     server: {
