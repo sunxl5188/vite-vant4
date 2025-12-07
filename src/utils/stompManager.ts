@@ -9,7 +9,7 @@ const stompManager = {
   stompClient: null as any, // Stomp客户端实例
   listenerList: [] as any, //监听器列表，断线重连时 用于重新注册监听（主要是在其他页面后添加的订阅）
   isReConnect: true, // 是否需要重连（可根据配置自行定义是否重连）
-  init(header: {}) {
+  init(header = {}) {
     console.log('stompManager---init-----', this)
     // header中的内容根据需要进行传递,例：{userId: store.state.user.userId,type: 'WEB'}
     this.header = header
@@ -32,7 +32,7 @@ const stompManager = {
       // 连接中
       console.log('连接正在建立')
     }
-    const _this = this
+
     this.websocket = new SockJS(this.url)
 
     // 获取STOMP子协议的客户端对象
@@ -45,8 +45,8 @@ const stompManager = {
       this.header, //此处注意更换自己的用户名，最好以参数形式带入
       (frame: any) => {
         console.log('链接成功！', frame)
-        _this.listenerList.forEach((item: any, index: number) => {
-          _this.listenerList[index].subscription = _this.stompClient.subscribe(
+        this.listenerList.forEach((item: any, index: number) => {
+          this.listenerList[index].subscription = this.stompClient.subscribe(
             item.topic,
             item.callback
           )
@@ -57,10 +57,10 @@ const stompManager = {
       (err: any) => {
         // 第一次连接失败和连接后断开连接都会调用这个函数 此处调用重连，主动调用disconnect不会走这里
         console.log('stompClient-----connect---error----', err)
-        if (_this.isReConnect) {
+        if (this.isReConnect) {
           // 需要重连
           setTimeout(() => {
-            _this.connect()
+            this.connect()
           }, 2000)
         }
       }
@@ -94,7 +94,7 @@ const stompManager = {
   unsubscribe(topic: string) {
     for (let i = 0; i < this.listenerList.length; i++) {
       if (this.listenerList[i].topic === topic) {
-        let subscription = this.listenerList[i].subscription
+        const subscription = this.listenerList[i].subscription
         if (subscription) {
           subscription.unsubscribe()
         }
@@ -105,13 +105,13 @@ const stompManager = {
     }
   },
   // 外部调用，订阅
-  subscribe(topic: string, callback: Function) {
+  subscribe(topic: string, callback: (_: any) => void) {
     if (this.stompClient && this.stompClient.connected) {
       if (this.listenerList.some((item: any) => item.topic === topic)) {
         // 之前有订阅过，需要解除订阅
         this.unsubscribe(topic)
       }
-      let subscription = this.stompClient.subscribe(topic, callback)
+      const subscription = this.stompClient.subscribe(topic, callback)
       this.listenerList.push({
         topic: topic,
         callback: callback,

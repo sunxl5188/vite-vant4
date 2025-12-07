@@ -29,7 +29,7 @@ const handleConn = () => {
     return
   }
   stompManager.init(handler.value)
-  stompManager.subscribe(`/topic/message/${imAccount.value}`, (msg: any) => {
+  stompManager.subscribe(`/topic/message/${imAccount.value}`, msg => {
     console.log('收到消息:', msg.body)
     messages.value.push(msg.body)
   })

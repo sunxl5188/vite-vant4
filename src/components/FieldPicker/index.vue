@@ -3,7 +3,7 @@
     v-model="fieldText"
     :label="label"
     required="auto"
-    v-bind="state.getFieldValue"
+    v-bind="getFieldValue(type, fieldAttr)"
     @click="handleShowPopup"
   />
   <van-popup v-model:show="showPicker" destroy-on-close round position="bottom">
@@ -21,6 +21,7 @@
 import type { PickerColumn, PickerOption, PickerFieldNames } from 'vant'
 import { fetch } from '@/utils/request'
 import { useUserStore } from '@/store/useUserStore'
+import { getFieldValue } from '@/components/BaseForm/common'
 
 const props = defineProps({
   modelValue: {
@@ -63,20 +64,13 @@ const props = defineProps({
 const userStore = useUserStore()
 const emit = defineEmits(['update:modelValue', 'update:text'])
 
+const type = inject('type', 'line')
+
 const state = reactive({
   showPicker: false,
   fieldText: '',
   pickerValue: [] as string[],
   sourceData: [] as PickerColumn,
-  getFieldValue: computed(() => {
-    return {
-      'is-link': true,
-      readonly: true,
-      placeholder: '请选择',
-      rules: [],
-      ...props.fieldAttr
-    }
-  }),
   getBindValue: computed(() => {
     return {
       title: '请选择',

@@ -3,7 +3,7 @@
     v-model="fieldText"
     :label="label"
     required="auto"
-    v-bind="state.getFieldValue"
+    v-bind="getFieldValue(type, fieldAttr)"
     @click="handleShowPopup"
   />
   <van-popup v-model:show="showPicker" destroy-on-close round position="bottom">
@@ -45,13 +45,14 @@
         {{ item[fieldNames.text || 'text'] }}
       </span>
     </div>
-    <van-empty v-if="!state.sourceData.length" description="暂无数据" />
+    <van-empty v-if="!state.sourceData?.length" description="暂无数据" />
   </van-popup>
 </template>
 
 <script setup lang="ts" name="FieldPickerTag">
 import { fetch } from '@/utils/request'
 import { useUserStore } from '@/store/useUserStore'
+import { getFieldValue } from '@/components/BaseForm/common'
 
 interface PickerFieldNames {
   text?: string
@@ -93,21 +94,15 @@ const props = withDefaults(defineProps<PropsType>(), {
 
 const emit = defineEmits(['update:modelValue', 'update:text'])
 const userStore = useUserStore()
+
+const type = inject('type', 'line')
+
 const state = reactive({
   showPicker: false,
   fieldText: '',
   pickerValue: [] as string[],
   sourceData: [] as any[],
-  row: props.attr?.row || 4,
-  getFieldValue: computed(() => {
-    return {
-      'is-link': true,
-      readonly: true,
-      placeholder: '请选择',
-      rules: [],
-      ...props.fieldAttr
-    }
-  }),
+  row: props.attr?.row || 3,
   isActive: computed(() => {
     return (val: string) => {
       return state.pickerValue.includes(val) ? 'active' : ''

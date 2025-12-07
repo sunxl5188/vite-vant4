@@ -32,8 +32,7 @@ export function copyContent(el: string) {
  * @returns 返回图片地址
  */
 export const getAssetsFile = (fileName: string) => {
-  const path: string = `../assets/images/${fileName}`
-  return new URL(path, import.meta.url).href
+  return new URL(`../assets/images/${fileName}`, import.meta.url).href
 }
 
 /**

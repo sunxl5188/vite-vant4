@@ -26,6 +26,7 @@ export interface FormItemType {
    * time 时间选择框
    * timeRange 时间范围选择框
    * pickerTag 标签多选框
+   * code 验证码输入框
    * slot 插槽
    */
   fieldType?: string

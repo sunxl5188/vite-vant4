@@ -1,9 +1,16 @@
 {
-	"001": "Company name",
-	"apple": "no apples | one apple | {count} apples",
-	"car": "car | cars",
-	"title": "Title{0}",
-	"reuse": "@:apple 重用",
-	"login": "login",
-	"login2": "@.capitalize:login"
+  "001": "Company name",
+  "apple": "no apples | one apple | {count} apples",
+  "car": "car | cars",
+  "title": "Title{0}",
+  "reuse": "@:apple 重用",
+  "login": "login",
+  "login2": "@.capitalize:login",
+  "a": {
+    "a1": "Home",
+    "a2": "Form",
+    "a3": "List",
+    "a4": "Login",
+    "a5": "Register"
+  }
 }

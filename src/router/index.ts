@@ -5,24 +5,37 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
-    component: () => import(/* webpackPrefetch: true */ '@/view/home/index.vue')
+    component: () => import(/* @vite-preload */ '@/view/home/index.vue')
   },
   {
     path: '/form',
     name: 'Form',
-    component: () => import(/* webpackPrefetch: true */ '@/view/form/index.vue')
+    component: () => import('@/view/form/index.vue')
+  },
+  {
+    path: '/list',
+    name: 'List',
+    component: () => import('@/view/list/index.vue')
   },
   {
     path: '/stomp',
     name: 'Stomp',
-    component: () =>
-      import(/* webpackPrefetch: true */ '@/view/stomp/index.vue')
+    component: () => import('@/view/stomp/index.vue')
   },
   {
     path: '/login',
     name: 'Login',
-    component: () =>
-      import(/* webpackPrefetch: true */ '@/view/login/index.vue')
+    component: () => import('@/view/login/index.vue')
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: () => import('@/view/login/register.vue')
+  },
+  {
+    path: '/protocol/:id?',
+    name: 'Protocol',
+    component: () => import('@/view/protocol/index.vue')
   }
 ]
 
@@ -30,7 +43,7 @@ const routes: Array<RouteRecordRaw> = [
 routes.push({
   path: '/:pathMatch(.*)*',
   name: 'NotFound',
-  component: () => import(/* webpackPrefetch: true */ '@/view/Notfound.vue')
+  component: () => import('@/view/Notfound.vue')
 })
 
 const router = createRouter({

@@ -1,9 +1,16 @@
 {
-	"001": "公司名称{0}",
-	"apple": "没有苹果 | 一个苹果 | {count} 苹果",
-	"car": "汽车 | 汽车总动员",
-	"title": "标题{0}",
-	"reuse": "@:apple 重用",
-	"login": "login",
-	"login2": "@.capitalize:login"
+  "001": "公司名称{0}",
+  "apple": "没有苹果 | 一个苹果 | {count} 苹果",
+  "car": "汽车 | 汽车总动员",
+  "title": "标题{0}",
+  "reuse": "@:apple 重用",
+  "login": "login",
+  "login2": "@.capitalize:login",
+  "a": {
+    "a1": "首页",
+    "a2": "表单",
+    "a3": "列表",
+    "a4": "登录",
+    "a5": "注册"
+  }
 }

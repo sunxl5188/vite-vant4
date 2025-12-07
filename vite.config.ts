@@ -1,15 +1,19 @@
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
+// @ts-ignore
 import eslintPlugin from 'vite-plugin-eslint'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { VantResolver } from '@vant/auto-import-resolver'
 import VueSetupExtend from 'vite-plugin-vue-setup-extend'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import { viteVConsole } from 'vite-plugin-vconsole'
 import { fileURLToPath, URL } from 'node:url'
 import vitePluginStyleToVw from 'vite-plugin-style-to-vw'
 import { createHtmlPlugin } from 'vite-plugin-html'
+import prefetchChunk from 'vite-plugin-prefetch-chunk'
+import viteCompression from 'vite-plugin-compression'
 import { version } from './package.json'
 
 // https://vite.dev/config/
@@ -95,6 +99,25 @@ export default ({ mode }: { mode: any }) => {
             title: env.VITE_APP_TITLE
           }
         }
+      }),
+      createSvgIconsPlugin({
+        // 指定路径在你的src里的svg存放文件
+        iconDirs: [
+          fileURLToPath(new URL('./src/assets/icons', import.meta.url))
+        ],
+        // 指定symbolId格式
+        symbolId: '[name]'
+      }),
+      viteCompression({
+        verbose: true,
+        disable: false,
+        threshold: 1024,
+        algorithm: 'gzip',
+        deleteOriginFile: true
+      }),
+      // 预加载和预取静态资源
+      prefetchChunk({
+        prefetchLegacyChunks: true
       })
     ],
     server: {

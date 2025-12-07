@@ -1,5 +1,10 @@
 <template>
-  <van-field :label="label" required="auto" v-bind="state.getFieldValue">
+  <van-field
+    :label="label"
+    required="auto"
+    v-bind="state.getFieldValue"
+    :class="[{ noBorder: type !== 'line' }]"
+  >
     <template #input>
       <van-checkbox-group
         v-model="state.checkboxValue"
@@ -67,6 +72,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue', 'update:text'])
 const userStore = useUserStore()
+const type = inject('type', 'line')
 const state = reactive({
   checkboxes: ref<any[]>([]), // 复选框组件列表
   checkboxValue: [] as Array<string>, //选中值
@@ -75,6 +81,7 @@ const state = reactive({
   getFieldValue: computed(() => {
     return {
       readonly: true,
+      border: true,
       rules: [],
       ...props.fieldAttr
     }

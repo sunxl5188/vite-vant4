@@ -3,7 +3,7 @@
     v-model="fieldText"
     :label="label"
     required="auto"
-    v-bind="state.getFieldValue"
+    v-bind="getFieldValue(type, fieldAttr)"
     @click="handleShowPopup"
   />
 
@@ -20,6 +20,7 @@
 
 <script setup lang="ts" name="FieldDate">
 import type { PickerOption } from 'vant'
+import { getFieldValue } from '@/components/BaseForm/common'
 import dayjs from 'dayjs'
 
 const props = defineProps({
@@ -41,21 +42,12 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:modelValue', 'update:text'])
-
+const type = inject('type', 'line')
 const state = reactive({
   pickerRef: ref<any>(null),
   showPicker: false,
   fieldText: '',
   pickerValue: [] as string[],
-  getFieldValue: computed(() => {
-    return {
-      'is-link': true,
-      readonly: true,
-      placeholder: '请选择日期',
-      rules: [],
-      ...props.fieldAttr
-    }
-  }),
   getBindValue: computed(() => {
     return {
       title: '请选择日期',
