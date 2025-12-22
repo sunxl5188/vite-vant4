@@ -104,37 +104,38 @@ const errorHandle = (status: number, other: string) => {
   }
 }
 
-/* interface PendingType {
-	url?: string
-	method?: string
-	params: any
-	data: any
-	cancel: any
-} */
+interface PendingType {
+  url?: string
+  method?: string
+  params: any
+  data: any
+  cancel: any
+}
 
-//const pending: Array<PendingType> = []
-//const CancelToken = axios.CancelToken
+const pending: Array<PendingType> = []
+const CancelToken = axios.CancelToken
 
-/* const removePending = (config: AxiosRequestConfig) => {
-	for (const key in pending) {
-		if (Object.hasOwn(pending, key)) {
-			const item: number = +key
-			const list: PendingType = pending[key]
-			// 当前请求在数组中存在时执行函数体
-			if (
-				list.url === config.url &&
-				list.method === config.method &&
-				JSON.stringify(list.params) === JSON.stringify(config.params) &&
-				JSON.stringify(list.data) === JSON.stringify(config.data)
-			) {
-				// 执行取消操作
-				list.cancel('操作太频繁，请稍后再试')
-				// 从数组中移除记录
-				pending.splice(item, 1)
-			}
-		}
-	}
-} */
+const removePending = (config: AxiosRequestConfig) => {
+  for (const key in pending) {
+    if (Object.hasOwn(pending, key)) {
+      const item: number = +key
+      const list = pending[key]
+      // 当前请求在数组中存在时执行函数体
+      if (
+        list &&
+        list.url === config.url &&
+        list.method === config.method &&
+        JSON.stringify(list.params) === JSON.stringify(config.params) &&
+        JSON.stringify(list.data) === JSON.stringify(config.data)
+      ) {
+        // 执行取消操作
+        list.cancel('操作太频繁，请稍后再试')
+        // 从数组中移除记录
+        pending.splice(item, 1)
+      }
+    }
+  }
+}
 
 /**
  * 实例化配置
@@ -155,16 +156,16 @@ const instance = axios.create({
  */
 instance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    //removePending(config)
-    /* config.cancelToken = new CancelToken(c => {
-			pending.push({
-				url: config.url,
-				method: config.method,
-				params: config.params,
-				data: config.data,
-				cancel: c
-			})
-		}) */
+    removePending(config)
+    config.cancelToken = new CancelToken(c => {
+      pending.push({
+        url: config.url,
+        method: config.method,
+        params: config.params,
+        data: config.data,
+        cancel: c
+      })
+    })
     const { userInfo } = JSON.parse(
       localStorage.getItem('userStore' + __APP_VERSION__) || '{}'
     )
@@ -188,7 +189,7 @@ instance.interceptors.response.use(
     if (config.status === 200 || config.status === 204) {
       return Promise.resolve(config.data)
     }
-    return Promise.reject(config)
+    return Promise.reject(new Error('请求失败'))
   }, // 请求失败
   function (error: AxiosError) {
     const { response, config } = error
@@ -203,7 +204,7 @@ instance.interceptors.response.use(
         config._count = config._count ?? 0
         // 检查是否已经把重试的总数用完
         if (config._count >= RETRY_COUNT) {
-          return Promise.reject(response ?? { message: error.message })
+          return Promise.reject(new Error(error.message))
         }
         // 增加重试计数
         config._count++
@@ -219,7 +220,7 @@ instance.interceptors.response.use(
         })
       }
 
-      return Promise.reject(response)
+      return Promise.reject(new Error(error.message))
     }
     // 处理断网的情况
     // eg:请求超时或断网时，更新state的network状态

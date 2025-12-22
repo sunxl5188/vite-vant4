@@ -160,7 +160,7 @@
 
 <script setup lang="ts" name="BaseForm">
 import type { PickerFieldNames } from 'vant'
-import type { FormItemType } from './index'
+import type { FormItemType } from './common'
 const FieldCalender = defineAsyncComponent(
   () => import(/* webpackPrefetch: true */ '@/components/FieldCalendar')
 )

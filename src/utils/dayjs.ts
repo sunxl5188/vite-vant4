@@ -22,5 +22,3 @@ dayjs.extend(relativeTime)
 dayjs.extend(localizedFormat)
 
 dayjs.locale('zh-cn')
-
-export default dayjs
