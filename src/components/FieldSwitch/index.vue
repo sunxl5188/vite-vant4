@@ -1,5 +1,10 @@
 <template>
-  <van-field :label="label" required="auto" v-bind="state.getFieldValue">
+  <van-field
+    :label="label"
+    required="auto"
+    v-bind="state.getFieldValue"
+    :class="[{ noBorder: type !== 'line' }]"
+  >
     <template #input>
       <van-switch
         v-model="state.checked"
@@ -39,7 +44,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:modelValue', 'update:text'])
-
+const type = inject('type', 'line')
 const state = reactive({
   checked: ref<string>(''), // 复选框组件列表
   getFieldValue: computed(() => {

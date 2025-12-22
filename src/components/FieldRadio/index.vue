@@ -1,5 +1,10 @@
 <template>
-  <van-field :label="label" required="auto" v-bind="state.getFieldValue">
+  <van-field
+    :label="label"
+    required="auto"
+    v-bind="state.getFieldValue"
+    :class="[{ noBorder: type !== 'line' }]"
+  >
     <template #input>
       <van-radio-group
         v-model="state.checkboxValue"
@@ -19,8 +24,8 @@
 </template>
 
 <script setup lang="ts" name="FieldRadio">
-import { dictApi } from '@/utils'
 import { fetch } from '@/utils/request'
+import { useUserStore } from '@/store/useUserStore'
 
 const props = defineProps({
   label: {
@@ -65,17 +70,20 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:modelValue', 'update:text'])
+const userStore = useUserStore()
+const type = inject('type', 'line')
 
 const state = reactive({
   checkboxValue: '' as string, //选中值
   checkboxText: '' as string, //选中文本
   sourceData: [] as any[], // 数据源
   getFieldValue: computed(() => {
-    return {
+    let bindAttr: Record<string, unknown> = {}
+    bindAttr = {
       readonly: true,
-      rules: [],
-      ...props.fieldAttr
+      rules: []
     }
+    return { ...bindAttr, ...props.fieldAttr }
   }),
   getBindValue: computed((): Partial<{ [key: string]: any }> => {
     return {
@@ -86,16 +94,7 @@ const state = reactive({
   }),
   // 加载数据
   async handleLoad() {
-    let apiUrl = ''
-    let params
-    if (props.dict) {
-      apiUrl = dictApi
-      params = { type: props.dict }
-    } else if (props.api) {
-      apiUrl = props.api
-      params = { type: props.params }
-    }
-    const { code, data } = await fetch(apiUrl, params)
+    const { code, data } = await fetch(props.api, props.params)
     if (code === 200) {
       state.sourceData = data
     }
@@ -118,7 +117,9 @@ const state = reactive({
 })
 
 onMounted(() => {
-  if (props.api || props.dict) {
+  if (props.dict) {
+    state.sourceData = userStore.dictData[props.dict]
+  } else if (props.api) {
     state.handleLoad()
   } else {
     state.sourceData = props.options

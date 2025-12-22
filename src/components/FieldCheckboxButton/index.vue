@@ -1,8 +1,26 @@
 <template>
-  <van-field :label="label" required="auto" v-bind="state.getFieldValue">
-    <template #input></template>
+  <van-field
+    :label="label"
+    required="auto"
+    v-bind="state.getFieldValue"
+    :class="[{ noBorder: type !== 'line' }]"
+  >
+    <template #input v-if="type !== 'line'">
+      <div class="flex justify-start items-start flex-wrap pt-[10px]">
+        <div
+          v-for="(item, i) in state.sourceData"
+          :key="i"
+          class="checkboxButton"
+          :class="state.isActive(item[fieldNames.value || 'value'])"
+          @click="state.handleSelect(item)"
+        >
+          {{ item[fieldNames.text || 'text'] }}
+        </div>
+      </div>
+    </template>
   </van-field>
   <div
+    v-if="type === 'line'"
     class="flex justify-start items-start flex-wrap px-4 pt-[10px]"
     style="border-bottom: 1px solid var(--van-cell-border-color)"
   >
@@ -19,8 +37,8 @@
 </template>
 
 <script setup lang="ts" name="FieldCheckboxButton">
-import { dictApi } from '@/utils'
 import { fetch } from '@/utils/request'
+import { useUserStore } from '@/store/useUserStore'
 
 const props = defineProps({
   label: {
@@ -61,7 +79,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:modelValue', 'update:text'])
-
+const userStore = useUserStore()
+const type = inject('type', 'line')
 const state = reactive({
   checkboxes: ref<any[]>([]), // 复选框组件列表
   checkboxValue: [] as Array<string>, //选中值
@@ -81,16 +100,7 @@ const state = reactive({
   }),
   // 加载数据
   async handleLoad() {
-    let apiUrl = ''
-    let params
-    if (props.dict) {
-      apiUrl = dictApi
-      params = { type: props.dict }
-    } else if (props.api) {
-      apiUrl = props.api
-      params = { type: props.params }
-    }
-    const { code, data } = await fetch(apiUrl, params)
+    const { code, data } = await fetch(props.api, props.params)
     if (code === 200) {
       state.sourceData = data
     }
@@ -118,7 +128,9 @@ const state = reactive({
 })
 
 onMounted(() => {
-  if (props.api || props.dict) {
+  if (props.dict) {
+    state.sourceData = userStore.dictData[props.dict]
+  } else if (props.api) {
     state.handleLoad()
   } else {
     state.sourceData = props.options

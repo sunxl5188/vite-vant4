@@ -1,31 +1,16 @@
 <template>
-  <div class="p-4">
-    <div>{{ getDictFilter('area', '0592') }}</div>
-    <div>{{ state }}</div>
-    <div>
-      <van-button type="primary" @click="handleUpdate">主要按钮</van-button>
-    </div>
-  </div>
+  <LocalIcon />
+  <van-cell-group inset>
+    <van-cell :title="$t('a.a1')" url="/" />
+    <van-cell :title="$t('a.a2')" url="/form" />
+    <van-cell :title="$t('a.a3')" url="/list" />
+    <van-cell :title="$t('a.a4')" url="/login" />
+    <van-cell :title="$t('a.a5')" url="/register" />
+  </van-cell-group>
 </template>
 
 <script setup lang="ts" name="HomeIndex">
-import { useAppStore } from '@/store/useAppStore'
-import { getDictFilter } from '@/utils'
-
-const appStore = useAppStore()
-appStore.setDictData()
-const state = shallowRef({
-  name: 'home index',
-  age: 100,
-  dictName: ''
-})
-
-const handleUpdate = () => {
-  state.value.age += 1
-  triggerRef(state)
-}
-
-onMounted(async () => {
-  //----
-})
+import { LocalIcon } from '@/components/Setting'
 </script>
+
+<style lang="scss" scoped></style>

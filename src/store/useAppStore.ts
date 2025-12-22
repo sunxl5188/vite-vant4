@@ -1,35 +1,24 @@
 import { defineStore } from 'pinia'
-import { fetch } from '@/utils/request'
 
-interface AppState {
-  theme: 'light' | 'dark'
-  language: string
-  dictData: Record<string, any>
-}
+type ThemeType = 'light' | 'dark'
+type LanguageType = 'zh-CN' | 'en-US'
 
 export const useAppStore = defineStore('app', {
-  state: (): AppState => ({
-    theme: 'light',
-    language: 'zh-CN',
-    dictData: {}
+  state: () => ({
+    theme: 'light' as ThemeType,
+    language: 'zh-CN' as LanguageType
   }),
   actions: {
     // 设置主题
-    setTheme(theme: 'light' | 'dark') {
+    setTheme(theme: ThemeType) {
       this.theme = theme
     },
     // 设置语言
-    setLanguage(lang: string) {
+    setLanguage(lang: LanguageType) {
       this.language = lang
-    },
-    // 设置字典数据
-    async setDictData() {
-      //this.dictData[dictType] = data
-      const { code, data } = await fetch('/home/index/getSystemDictAll')
-      if (code === 200) {
-        this.dictData = data
-      }
     }
   },
-  persist: true
+  persist: {
+    key: 'appStore' + __APP_VERSION__
+  }
 })

@@ -4,29 +4,22 @@
     :disabled="disabled"
     @refresh="onRefresh"
   >
+    <van-empty v-if="state.empty" :description="description" />
     <van-list
+      v-else
       v-model:loading="loading"
       :finished="finished"
       :offset="5"
       finished-text="没有更多了"
       @load="onLoad"
     >
-      <DynamicScroller :items="sourceData" :min-item-size="54" class="h-full">
-        <template #default="{ item, index, active }">
-          <DynamicScrollerItem
-            :item="item"
-            :active="active"
-            :size-dependencies="[item.message]"
-            :data-index="index"
-          >
-            <slot :row="item">
-              <div class="leading-7 p-4 border-b border-gray-200">
-                {{ item.title }}
-              </div>
-            </slot>
-          </DynamicScrollerItem>
-        </template>
-      </DynamicScroller>
+      <div v-for="(item, i) in sourceData" :key="i">
+        <slot :row="item">
+          <div class="leading-7 p-4 border-b border-gray-200">
+            {{ item.title }}
+          </div>
+        </slot>
+      </div>
     </van-list>
   </van-pull-refresh>
 </template>
@@ -40,6 +33,8 @@ interface StateType {
   sourceData: Array<any>
   loading: boolean
   finished: boolean
+  empty: boolean
+  totalPage: number
   pages: {
     currentPage: number
     pageSize: number
@@ -57,18 +52,29 @@ const props = defineProps({
     default: false
   },
   /**
-   * @接口地址
-   */
-  api: {
-    type: String,
-    default: '/api/index/article'
-  },
-  /**
    * @每页条数
    */
   pageSize: {
     type: Number,
     default: 10
+  },
+  description: {
+    type: String,
+    default: '暂无数据'
+  },
+  /**
+   * @接口地址
+   */
+  api: {
+    type: String,
+    default: '/home/index/article'
+  },
+  /**
+   * @接口参数
+   */
+  params: {
+    type: Object,
+    default: () => ({})
   }
 })
 
@@ -77,36 +83,44 @@ const state = reactive<StateType>({
   sourceData: [], // 列表数据
   loading: false, // 加载状态
   finished: false, // 是否全部加载完成
+  empty: false,
+  totalPage: 0, // 总页数
   pages: {
     currentPage: 1,
     pageSize: props.pageSize
   },
   // 上拉加载
-  onLoad: throttle(
-    () => {
-      state.loading = true
-      const timeout = state.pages.currentPage === 1 ? 0 : 1000
-      setTimeout(async () => {
-        const { code, data } = await post(props.api, {
-          ...state.pages
-        })
-        if (code === 200) {
-          state.sourceData =
-            data.currentPage === 1
-              ? data.list
-              : [...state.sourceData, ...data.list]
-        }
-        state.loading = false
-        if (data.list.length < data.pageSize) {
-          state.finished = true
-        } else {
-          state.pages.currentPage += 1
-        }
-      }, timeout)
-    },
-    1000,
-    { trailing: true }
-  ),
+  onLoad: throttle(() => {
+    state.loading = true
+    const timeout = state.pages.currentPage === 1 ? 0 : 500
+    setTimeout(async () => {
+      const { code, data } = await post(props.api, {
+        ...state.pages,
+        ...props.params
+      })
+      if (code === 200) {
+        state.sourceData =
+          data.currentPage === 1
+            ? data.list
+            : [...state.sourceData, ...data.list]
+        state.totalPage = Math.ceil(data.total / state.pages.pageSize)
+      }
+      state.pages.currentPage += 1
+      state.loading = false
+
+      if (
+        data.list.length < data.pageSize ||
+        state.pages.currentPage > state.totalPage
+      ) {
+        state.finished = true
+      }
+      if (state.sourceData.length === 0) {
+        state.empty = true
+      } else {
+        state.empty = false
+      }
+    }, timeout)
+  }, 500),
 
   // 下拉刷新
   onRefresh() {

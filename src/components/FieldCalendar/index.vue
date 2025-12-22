@@ -3,7 +3,7 @@
     v-model="fieldText"
     :label="label"
     required="auto"
-    v-bind="state.getFieldValue"
+    v-bind="getFieldValue(type, fieldAttr)"
     @click="handleShowPopup"
   />
   <van-calendar
@@ -16,6 +16,7 @@
 
 <script setup lang="ts" name="CalendarIndex">
 import dayjs from 'dayjs'
+import { getFieldValue } from '@/components/BaseForm/common'
 
 const props = defineProps({
   modelValue: { type: String, default: '' },
@@ -34,20 +35,11 @@ const props = defineProps({
   }
 })
 const emit = defineEmits(['update:modelValue'])
-
+const type = inject('type', 'line')
 const state = reactive({
   fieldText: '',
   fieldValue: '',
   visible: false,
-  getFieldValue: computed(() => {
-    return {
-      'is-link': true,
-      readonly: true,
-      placeholder: '请选择日期',
-      rules: [],
-      ...props.fieldAttr
-    }
-  }),
   getBindValue: computed((): any => {
     return {
       title: '选择日期',

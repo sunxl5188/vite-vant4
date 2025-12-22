@@ -1,27 +1,27 @@
 <template>
   <BaseForm
-    :ref="el => (state.formRef = el)"
+    ref="formRef"
     :form-item="state.formItem"
     :rules="state.rules"
-    @submit="state.handleInSubmit"
+    type="input-round"
   >
     <template #title1>
       <div
-        class="text-base font-bold px-4 py-2 bg-gray-100 border-b border-gray-200"
+        class="text-base font-bold px-4 py-2 bg-gray-100 border-b border-gray-200 mb-3"
       >
         用户信息表单
       </div>
     </template>
     <template #title2>
       <div
-        class="text-base font-bold px-4 py-2 bg-gray-100 border-b border-gray-200"
+        class="text-base font-bold px-4 py-2 bg-gray-100 border-b border-gray-200 mb-3"
       >
         基本信息
       </div>
     </template>
     <template #button>
       <van-button
-        type="warning"
+        type="primary"
         round
         size="large"
         block
@@ -34,22 +34,22 @@
   </BaseForm>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="FormInput">
 import type { FormItemType } from '@/components/BaseForm'
 import BaseForm from '@/components/BaseForm'
 
 interface StateType {
   loading: boolean
-  formRef: Ref<any>
   formItem: FormItemType[]
   rules: { [key: string]: any }
   handleInSubmit: (_data: any) => void
   handleSubmit: () => void
 }
 
+const formRef = ref<InstanceType<typeof BaseForm> | null>(null)
+
 const state = reactive<StateType>({
   loading: false,
-  formRef: ref<any>(null),
   formItem: [
     {
       label: '',
@@ -249,7 +249,7 @@ const state = reactive<StateType>({
         placeholder: '请选择'
       },
       data: {
-        dict: '1'
+        dict: 'week'
       }
     },
     {
@@ -261,13 +261,13 @@ const state = reactive<StateType>({
         placeholder: '请选择'
       },
       data: {
-        dict: '11'
+        dict: 'hobby'
       },
       attr: { row: 3 }
     }
   ],
   rules: {
-    username: [{ required: true, message: '用户名不能为空', trigger: 'blur' }]
+    username: [{ required: true, message: '用户名不能为空', trigger: 'onBlur' }]
     /* password: [{ required: true, message: '密码不能为空', trigger: 'blur' }],
     dateBirth: [
       { required: true, message: '出生日期不能为空', trigger: 'blur' }
@@ -287,11 +287,15 @@ const state = reactive<StateType>({
   //自定按钮提交方法
   async handleSubmit() {
     state.loading = true
-    const { code, data } = await state.formRef.onSubmit()
-    console.log('🚀 ~ data:', code, data)
-    setTimeout(() => {
-      state.loading = false
-    }, 1000)
+    if (formRef.value) {
+      const { code, data } = await formRef.value.onSubmit()
+      console.log('🚀 ~ data:', code, data)
+      setTimeout(() => {
+        state.loading = false
+      }, 1000)
+    }
   }
 })
 </script>
+
+<style scoped lang="scss"></style>

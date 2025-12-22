@@ -1,5 +1,5 @@
 import ClipboardJS from 'clipboard'
-import { useAppStore } from '@/store/useAppStore'
+import { useUserStore } from '@/store/useUserStore'
 
 // 系统字典接口
 export const dictApi = '/home/index/getSystemDict'
@@ -32,8 +32,7 @@ export function copyContent(el: string) {
  * @returns 返回图片地址
  */
 export const getAssetsFile = (fileName: string) => {
-  const path: string = `../assets/images/${fileName}`
-  return new URL(path, import.meta.url).href
+  return new URL(`../assets/images/${fileName}`, import.meta.url).href
 }
 
 /**
@@ -47,8 +46,8 @@ export function getDictFilter(dictType: string, value: string): string {
   if (!dictType || !value) {
     return result
   }
-  const appStore = useAppStore()
-  const dictData = appStore.dictData[dictType] || []
+  const userStore = useUserStore()
+  const dictData = userStore.dictData[dictType] || []
   const dictItem = dictData.find((item: any) => item.value === value)
   if (dictItem) {
     result = dictItem.text || '--'

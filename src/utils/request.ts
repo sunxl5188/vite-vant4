@@ -11,6 +11,8 @@ declare module 'axios' {
   }
 }
 
+export type PromiseResult = AxiosResponse | PromiseLike<AxiosResponse>
+
 import axios from 'axios'
 import type {
   AxiosRequestConfig,
@@ -31,58 +33,74 @@ const handleMessage = (content: string): void => {
  * @param status
  * @param other
  */
-const errorHandle = (status: number, other: string): void => {
+const errorHandle = (status: number, other: string) => {
   // 状态码判断
   switch (status) {
-    case 302:
+    case 302: {
       handleMessage(`${status}:接口重定向了！`)
       break
-    case 400:
+    }
+    case 400: {
       handleMessage(
         `${status}:发出的请求有错误，服务器没有进行新建或修改数据的操作`
       )
       break
+    }
     // 401: 未登录
     // 未登录则跳转登录页面，并携带当前页面的路径
     // 在登录成功后返回当前页面，这一步需要在登录页操作。
-    case 401: //重定向
+    //重定向
+    case 401: {
       handleMessage(`${status}:登录失效`)
       break
+    }
+
     // 403 token过期
     // 清除token并跳转登录页
-    case 403:
+    case 403: {
       handleMessage(`${status}:登录过期,用户得到授权，但是访问是被禁止的`)
       break
-    case 404:
+    }
+    case 404: {
       handleMessage(`${status}:网络请求不存在`)
       break
-    case 406:
+    }
+    case 406: {
       handleMessage(`${status}:请求的格式不可得`)
       break
-    case 408:
+    }
+    case 408: {
       handleMessage(`${status}:请求超时！`)
       break
-    case 410:
+    }
+    case 410: {
       handleMessage(`${status}:请求的资源被永久删除，且不会再得到的`)
       break
-    case 422:
+    }
+    case 422: {
       handleMessage(`${status}:当创建一个对象时，发生一个验证错误`)
       break
-    case 500:
+    }
+    case 500: {
       handleMessage(`${status}:服务器发生错误，请检查服务器`)
       break
-    case 502:
+    }
+    case 502: {
       handleMessage(`${status}:网关错误`)
       break
-    case 503:
+    }
+    case 503: {
       handleMessage(`${status}:服务不可用，服务器暂时过载或维护`)
       break
-    case 504:
+    }
+    case 504: {
       handleMessage(`${status}:网关超时`)
       break
-    default:
+    }
+    default: {
       handleMessage(`${status}:其他错误`)
       console.log(other)
+    }
   }
 }
 
@@ -147,10 +165,12 @@ instance.interceptors.request.use(
 				cancel: c
 			})
 		}) */
-    const token = localStorage.getItem('token') ?? ''
-    if (token && config.headers) {
-      config.headers.Authorization = token
-      config.headers.Token = token
+    const { userInfo } = JSON.parse(
+      localStorage.getItem('userStore' + __APP_VERSION__) || '{}'
+    )
+    if (userInfo?.token && config.headers) {
+      config.headers.Authorization = userInfo.token
+      config.headers.Token = userInfo.token
     }
     return config
   },

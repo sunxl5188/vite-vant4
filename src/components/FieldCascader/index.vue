@@ -3,7 +3,7 @@
     v-model="fieldText"
     :label="label"
     required="auto"
-    v-bind="state.getFieldValue"
+    v-bind="getFieldValue(type, fieldAttr)"
     @click="handleShowPopup"
   />
   <van-popup v-model:show="visible" round position="bottom">
@@ -19,6 +19,7 @@
 
 <script setup lang="ts" name="CascaderIndex">
 import type { CascaderFieldNames, CascaderOption } from 'vant'
+import { getFieldValue } from '@/components/BaseForm/common'
 import cityJSON from './city.json'
 import { fetch } from '@/utils/request'
 
@@ -38,7 +39,6 @@ interface StateType {
   handleClose: () => void //关闭弹出层
   handleFinish: (_: HandleFinishParams) => void //完成选择
   handleGetText: (_: string) => void //获取text
-  getFieldValue: Record<string, any> //输入框属性
   getBindValue: Record<string, any> //弹窗属性
 }
 
@@ -80,21 +80,12 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:modelValue', 'update:text'])
-
+const type = inject('type', 'line')
 const state = reactive<StateType>({
   visible: false,
   fieldText: '',
   fieldValue: '',
   cascaderValue: '',
-  getFieldValue: computed(() => {
-    return {
-      'is-link': true,
-      readonly: true,
-      placeholder: '请选择地区',
-      rules: [],
-      ...props.fieldAttr
-    }
-  }),
   getBindValue: computed(() => {
     return {
       title: '请选择',

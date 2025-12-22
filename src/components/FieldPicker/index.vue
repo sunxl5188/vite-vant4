@@ -3,7 +3,7 @@
     v-model="fieldText"
     :label="label"
     required="auto"
-    v-bind="state.getFieldValue"
+    v-bind="getFieldValue(type, fieldAttr)"
     @click="handleShowPopup"
   />
   <van-popup v-model:show="showPicker" destroy-on-close round position="bottom">
@@ -19,8 +19,9 @@
 
 <script setup lang="ts" name="FieldPicker">
 import type { PickerColumn, PickerOption, PickerFieldNames } from 'vant'
-import { dictApi } from '@/utils'
 import { fetch } from '@/utils/request'
+import { useUserStore } from '@/store/useUserStore'
+import { getFieldValue } from '@/components/BaseForm/common'
 
 const props = defineProps({
   modelValue: {
@@ -31,52 +32,7 @@ const props = defineProps({
   // 选项数据
   columns: {
     type: Array as PropType<PickerColumn>,
-    default: () => [
-      {
-        text: '浙江',
-        value: 'Zhejiang',
-        children: [
-          {
-            text: '杭州',
-            value: 'Hangzhou',
-            children: [
-              { text: '西湖区', value: 'Xihu' },
-              { text: '余杭区', value: 'Yuhang' }
-            ]
-          },
-          {
-            text: '温州',
-            value: 'Wenzhou',
-            children: [
-              { text: '鹿城区', value: 'Lucheng' },
-              { text: '瓯海区', value: 'Ouhai' }
-            ]
-          }
-        ]
-      },
-      {
-        text: '福建',
-        value: 'Fujian',
-        children: [
-          {
-            text: '福州',
-            value: 'Fuzhou',
-            children: [
-              { text: '鼓楼区', value: 'Gulou' },
-              { text: '台江区', value: 'Taijiang' }
-            ]
-          },
-          {
-            text: '厦门',
-            value: 'Xiamen',
-            children: [
-              { text: '思明区', value: 'Siming' },
-              { text: '海沧区', value: 'Haicang' }
-            ]
-          }
-        ]
-      }
-    ]
+    default: () => []
   },
   // 字典类型
   dict: { type: String, default: '' },
@@ -105,22 +61,16 @@ const props = defineProps({
   }
 })
 
+const userStore = useUserStore()
 const emit = defineEmits(['update:modelValue', 'update:text'])
+
+const type = inject('type', 'line')
 
 const state = reactive({
   showPicker: false,
   fieldText: '',
   pickerValue: [] as string[],
   sourceData: [] as PickerColumn,
-  getFieldValue: computed(() => {
-    return {
-      'is-link': true,
-      readonly: true,
-      placeholder: '请选择',
-      rules: [],
-      ...props.fieldAttr
-    }
-  }),
   getBindValue: computed(() => {
     return {
       title: '请选择',
@@ -169,16 +119,7 @@ const state = reactive({
   },
   // 加载数据
   async handleLoad() {
-    let apiUrl = ''
-    let params
-    if (props.dict) {
-      apiUrl = dictApi
-      params = { type: props.dict }
-    } else if (props.api) {
-      apiUrl = props.api
-      params = { type: props.params }
-    }
-    const { code, data } = await fetch(apiUrl, params)
+    const { code, data } = await fetch(props.api, props.params)
     if (code === 200) {
       state.sourceData = data
     }
@@ -186,25 +127,25 @@ const state = reactive({
 })
 
 onMounted(() => {
-  if (props.api || props.dict) {
+  if (props.dict) {
+    state.sourceData = userStore.dictData[props.dict]
+  } else if (props.api) {
     state.handleLoad()
   } else {
-    state.sourceData = props.columns
+    state.sourceData = props.columns || []
   }
 })
 
 watch(
   () => [props.modelValue, state.sourceData],
   () => {
-    if (props.modelValue) {
+    if (props.modelValue && state.sourceData?.length) {
       const value = props.modelValue.split(',')
       state.pickerValue = value
-      if (state.sourceData.length) {
-        state.handleQueryText()
-      }
+      state.handleQueryText()
     }
   },
-  { immediate: true }
+  { immediate: true, deep: true }
 )
 
 const { showPicker, fieldText, pickerValue, handleShowPopup, onConfirm } =
